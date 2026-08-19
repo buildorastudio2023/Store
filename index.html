@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buildora Studio</title>
+
   <style>
-    /* Reset & variables CSS */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -33,18 +33,17 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      overflow: hidden; /* Empêche le défilement pendant le chargement */
+      overflow: hidden;
     }
 
     body.loaded {
-      overflow: auto; /* Rétablit le défilement une fois le chargement terminé */
+      overflow: auto;
     }
 
-    /* Écran de chargement (Loader) */
+    /* LOADER */
     #loader {
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100vw;
       height: 100vh;
       background-color: var(--bg-surface);
@@ -84,7 +83,7 @@
       letter-spacing: -0.01em;
     }
 
-    /* Barre de navigation */
+    /* NAVIGATION */
     .navbar {
       background-color: var(--bg-surface);
       border-bottom: 1px solid var(--border);
@@ -129,11 +128,12 @@
       cursor: pointer;
     }
 
-    .nav-links a:hover, .nav-links a.active {
+    .nav-links a:hover,
+    .nav-links a.active {
       color: var(--brand);
     }
 
-    /* Gestion de l'affichage des sections (Multi-pages en un fichier) */
+    /* SECTIONS */
     .page-section {
       display: none;
     }
@@ -142,7 +142,7 @@
       display: block;
     }
 
-    /* En-tête de la page Projets */
+    /* HERO */
     .hero {
       max-width: 1100px;
       margin: 0 auto;
@@ -163,7 +163,7 @@
       max-width: 600px;
     }
 
-    /* Conteneur principal */
+    /* MAIN */
     main {
       max-width: 1100px;
       margin: 0 auto;
@@ -172,7 +172,7 @@
       width: 100%;
     }
 
-    /* Grille d'applications (Section Projets) */
+    /* APPLICATIONS */
     .app-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -291,7 +291,7 @@
       fill: currentColor;
     }
 
-    /* Cartes pour "À propos", "Contact" et "Droits réservés" */
+    /* CARTES DE CONTENU */
     .content-card {
       max-width: 800px;
       margin: 2.5rem auto 0;
@@ -316,7 +316,7 @@
       line-height: 1.6;
     }
 
-    /* Styles spécifiques à la section Contact */
+    /* CONTACT */
     .info-list {
       display: flex;
       flex-direction: column;
@@ -362,7 +362,8 @@
       margin-bottom: 0.25rem;
     }
 
-    .info-details a, .info-details span {
+    .info-details a,
+    .info-details span {
       font-size: 1.05rem;
       font-weight: 600;
       color: var(--text-main);
@@ -374,7 +375,7 @@
       text-decoration: underline;
     }
 
-    /* Footer */
+    /* FOOTER */
     footer {
       background-color: var(--bg-surface);
       border-top: 1px solid var(--border);
@@ -403,24 +404,41 @@
       text-decoration: underline;
     }
 
+    /* MOBILE */
     @media (max-width: 640px) {
       .hero h1 {
         font-size: 1.75rem;
       }
+
       .content-card {
         padding: 1.5rem;
       }
+
       .footer-container {
         flex-direction: column;
         gap: 1rem;
         text-align: center;
       }
+
+      .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .app-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <!-- Écran de chargement (Overlay) -->
+  <!-- Écran de chargement -->
   <div id="loader">
     <div class="spinner"></div>
     <div class="loader-text">Chargement des ressources...</div>
@@ -429,47 +447,89 @@
   <!-- Navigation -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="#projets" class="brand" onclick="showPage('projets')">Buildora<span>Studio</span></a>
+
+      <a href="#projets" class="brand" onclick="showPage('projets'); return false;">
+        Buildora<span>Studio</span>
+      </a>
+
       <ul class="nav-links">
-        <li><a id="nav-projets" class="active" onclick="showPage('projets')">Projets</a></li>
-        <li><a id="nav-apropos" onclick="showPage('apropos')">À propos</a></li>
-        <li><a id="nav-contact" onclick="showPage('contact')">Contact</a></li>
+        <li>
+          <a id="nav-projets" class="active" onclick="showPage('projets')">
+            Projets
+          </a>
+        </li>
+
+        <li>
+          <a id="nav-apropos" onclick="showPage('apropos')">
+            À propos
+          </a>
+        </li>
+
+        <li>
+          <a id="nav-contact" onclick="showPage('contact')">
+            Contact
+          </a>
+        </li>
       </ul>
+
     </div>
   </nav>
 
   <main>
+
     <!-- SECTION 1 : PROJETS -->
     <section id="projets" class="page-section active">
+
       <header class="hero">
         <h1>Nos projets & applications</h1>
-        <p>Retrouvez ici l'ensemble des outils web développés par notre studio. Sélectionnez un projet pour y accéder directement.</p>
+        <p>
+          Retrouvez ici l'ensemble des outils web développés par notre studio.
+          Sélectionnez un projet pour y accéder directement.
+        </p>
       </header>
 
       <div class="app-grid">
+
         <!-- Application 1 -->
         <article class="app-card">
           <div>
             <div class="card-top">
+
               <div class="app-icon">
-                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
               </div>
+
               <div class="card-title-group">
                 <h2>Project Dashboard</h2>
                 <span class="card-tag">Productivité</span>
               </div>
+
             </div>
+
             <p class="app-desc">
-              Gestionnaire de tâches minimaliste conçu pour organiser le flux de travail des équipes à distance.
+              Gestionnaire de tâches minimaliste conçu pour organiser le flux
+              de travail des équipes à distance.
             </p>
           </div>
+
           <div class="card-footer">
             <span class="app-status">
-              <span class="status-dot"></span> V1.2
+              <span class="status-dot"></span>
+              V1.2
             </span>
-            <a href="https://example.com/dashboard" target="_blank" rel="noopener" class="btn-launch">
+
+            <a
+              href="https://example.com/dashboard"
+              target="_blank"
+              rel="noopener"
+              class="btn-launch"
+            >
               Ouvrir
-              <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/></svg>
+              <svg viewBox="0 0 24 24">
+                <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2-2H7c0-1.1.9-2 2-2z"/>
+              </svg>
             </a>
           </div>
         </article>
@@ -478,25 +538,42 @@
         <article class="app-card">
           <div>
             <div class="card-top">
+
               <div class="app-icon">
-                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                </svg>
               </div>
+
               <div class="card-title-group">
                 <h2>Data Metrics Tool</h2>
                 <span class="card-tag">Analyse</span>
               </div>
+
             </div>
+
             <p class="app-desc">
-              Outil de visualisation de données léger permettant de convertir des fichiers CSV en graphiques interactifs.
+              Outil de visualisation de données léger permettant de convertir
+              des fichiers CSV en graphiques interactifs.
             </p>
           </div>
+
           <div class="card-footer">
             <span class="app-status">
-              <span class="status-dot"></span> V2.0
+              <span class="status-dot"></span>
+              V2.0
             </span>
-            <a href="https://example.com/metrics" target="_blank" rel="noopener" class="btn-launch">
+
+            <a
+              href="https://example.com/metrics"
+              target="_blank"
+              rel="noopener"
+              class="btn-launch"
+            >
               Ouvrir
-              <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/></svg>
+              <svg viewBox="0 0 24 24">
+                <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
+              </svg>
             </a>
           </div>
         </article>
@@ -505,134 +582,252 @@
         <article class="app-card">
           <div>
             <div class="card-top">
+
               <div class="app-icon">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
+                <svg viewBox="0 0 24 24">
+                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/>
+                </svg>
               </div>
+
               <div class="card-title-group">
                 <h2>Invoice Generator</h2>
                 <span class="card-tag">Finance</span>
               </div>
+
             </div>
+
             <p class="app-desc">
-              Générateur de factures au format PDF à destination des indépendants et des petites entreprises.
+              Générateur de factures au format PDF à destination des
+              indépendants et des petites entreprises.
             </p>
           </div>
+
           <div class="card-footer">
             <span class="app-status">
-              <span class="status-dot"></span> V1.0
+              <span class="status-dot"></span>
+              V1.0
             </span>
-            <a href="https://example.com/invoice" target="_blank" rel="noopener" class="btn-launch">
+
+            <a
+              href="https://example.com/invoice"
+              target="_blank"
+              rel="noopener"
+              class="btn-launch"
+            >
               Ouvrir
-              <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/></svg>
+              <svg viewBox="0 0 24 24">
+                <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2-2-2z"/>
+              </svg>
             </a>
           </div>
         </article>
+
       </div>
     </section>
 
+
     <!-- SECTION 2 : À PROPOS -->
     <section id="apropos" class="page-section">
+
       <article class="content-card">
+
         <h1>À propos de Buildora Studio</h1>
+
         <p>
-          ________________
+          BuildoraStudio, anciennement Meta Service, est un projet commencé
+          en 2023 afin d’expérimenter différents concepts numériques.
         </p>
+
         <p>
-          BuildoraStudio, anciennement Meta Service, est un projet commencé en 2023 afin d’expérimenter différents concepts numériques.
-</p>
-Au départ, le projet était principalement consacré au développement de petits jeux en 2D. Cette première période nous a permis de découvrir progressivement la programmation, la conception d’interfaces, la logique des jeux et la création d’expériences interactives. À travers différents prototypes et projets expérimentaux, nous avons pu apprendre en pratiquant, tester plusieurs concepts et acquérir une première expérience dans le développement logiciel.
-</p>
-En 2025, cette expérience a évolué vers un projet plus ambitieux : la création d’un réseau social privé fonctionnel, développé et utilisé dans un cadre personnel. Cette étape nous a permis de dépasser le simple développement de prototypes pour travailler sur une application plus complète, avec une véritable interface, différentes fonctionnalités et une logique de fonctionnement structurée.
-</p>
-En 2026, BuildoraStudio a pris une nouvelle direction avec le début du développement d’applications de gestion destinées aux commerces. L’objectif est de concevoir des outils simples, modernes et adaptés aux besoins quotidiens des professionnels, notamment pour la gestion des ventes, des articles, des stocks et des opérations commerciales.
-</p>
-Cette évolution marque une nouvelle étape pour BuildoraStudio, avec la volonté de transformer les expérimentations des premières années en véritables solutions numériques utiles et accessibles aux commerces.
+          Au départ, le projet était principalement consacré au développement
+          de petits jeux en 2D. Cette première période nous a permis de
+          découvrir progressivement la programmation, la conception
+          d’interfaces, la logique des jeux et la création d’expériences
+          interactives. À travers différents prototypes et projets
+          expérimentaux, nous avons pu apprendre en pratiquant, tester
+          plusieurs concepts et acquérir une première expérience dans le
+          développement logiciel.
         </p>
+
+        <p>
+          En 2025, cette expérience a évolué vers un projet plus ambitieux :
+          la création d’un réseau social privé fonctionnel, développé et
+          utilisé dans un cadre personnel. Cette étape nous a permis de
+          dépasser le simple développement de prototypes pour travailler
+          sur une application plus complète, avec une véritable interface,
+          différentes fonctionnalités et une logique de fonctionnement
+          structurée.
+        </p>
+
+        <p>
+          En 2026, BuildoraStudio a pris une nouvelle direction avec le début
+          du développement d’applications de gestion destinées aux commerces.
+          L’objectif est de concevoir des outils simples, modernes et adaptés
+          aux besoins quotidiens des professionnels, notamment pour la gestion
+          des ventes, des articles, des stocks et des opérations commerciales.
+        </p>
+
+        <p>
+          Cette évolution marque une nouvelle étape pour BuildoraStudio,
+          avec la volonté de transformer les expérimentations des premières
+          années en véritables solutions numériques utiles et accessibles
+          aux commerces.
+        </p>
+
       </article>
+
     </section>
+
 
     <!-- SECTION 3 : CONTACT -->
     <section id="contact" class="page-section">
+
       <div class="content-card">
+
         <h1>Contactez-nous</h1>
-        <p>Pour toute question, demande de partenariat ou information complémentaire, retrouvez nos coordonnées ci-dessous.</p>
+
+        <p>
+          Pour toute question, demande de partenariat ou information
+          complémentaire, retrouvez nos coordonnées ci-dessous.
+        </p>
 
         <div class="info-list">
+
           <!-- Adresse Email -->
           <div class="info-item">
+
             <div class="info-icon">
-              <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              <svg viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
             </div>
+
             <div class="info-details">
               <label>Adresse E-mail</label>
-              <a href="mailto:metaserviceofficiel@gmail.com">metaserviceofficiel@gmail.com</a>
+
+              <a href="mailto:metaserviceofficiel@gmail.com">
+                metaserviceofficiel@gmail.com
+              </a>
             </div>
+
           </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
 
     <!-- SECTION 4 : DROITS RÉSERVÉS / MENTIONS LÉGALES -->
     <section id="droits" class="page-section">
+
       <article class="content-card">
-        <h1>Mentions Légales & Droits d'Auteur</h1>
-        </p>
+
+        <h1>Mentions légales & droits d'auteur</h1>
+
         <p>
-         Les contenus présents sur ce site, notamment les textes, logiciels, interfaces, éléments graphiques, logos et créations originales, sont présentés par BuildoraStudio.
-
-Toute utilisation, reproduction ou redistribution non autorisée de ces éléments est refusée, sous réserve des droits et exceptions prévus par les lois applicables.
-
-BuildoraStudio se réserve le droit de faire valoir ses droits lorsque la législation applicable le permet.
+          Les contenus présents sur ce site, notamment les textes, logiciels,
+          interfaces, éléments graphiques, logos et créations originales,
+          sont présentés par BuildoraStudio.
         </p>
+
+        <p>
+          Toute utilisation, reproduction ou redistribution non autorisée
+          de ces éléments est refusée, sous réserve des droits et exceptions
+          prévus par les lois applicables.
+        </p>
+
+        <p>
+          BuildoraStudio se réserve le droit de faire valoir ses droits
+          lorsque la législation applicable le permet.
+        </p>
+
       </article>
+
     </section>
+
   </main>
 
-  <!-- Pied de page -->
+
+  <!-- PIED DE PAGE -->
   <footer>
+
     <div class="footer-container">
+
       <p>
-        &copy; 2026 Buildora Studio. 
-        <a class="footer-link" onclick="showPage('droits')">Tous droits réservés.</a>
+        &copy; 2026 Buildora Studio.
+        <a
+          href="#droits"
+          class="footer-link"
+          onclick="showPage('droits'); return false;"
+        >
+          Tous droits réservés.
+        </a>
       </p>
+
     </div>
+
   </footer>
 
-  <!-- Scripts JavaScript -->
+
+  <!-- JAVASCRIPT -->
   <script>
-    // Gestion de l'écran de chargement (Loader)
+
+    /* Écran de chargement */
     window.addEventListener('load', function() {
+
       const loader = document.getElementById('loader');
-      
-      // Ajout de la classe d'animation d'évanouissement
+
       loader.classList.add('fade-out');
-      
-      // Rétablissement du défilement du corps du document
+
       document.body.classList.add('loaded');
-      
-      // Suppression de l'élément du DOM après la fin de la transition CSS (0.5s)
-      setTimeout(() => {
+
+      setTimeout(function() {
         loader.style.display = 'none';
       }, 500);
+
     });
 
-    // Navigation dynamique entre les sections
+
+    /* Navigation entre les sections */
     function showPage(pageId) {
+
       const sections = document.querySelectorAll('.page-section');
-      sections.forEach(section => section.classList.remove('active'));
+
+      sections.forEach(function(section) {
+        section.classList.remove('active');
+      });
+
 
       const navLinks = document.querySelectorAll('.nav-links a');
-      navLinks.forEach(link => link.classList.remove('active'));
+
+      navLinks.forEach(function(link) {
+        link.classList.remove('active');
+      });
+
 
       const targetSection = document.getElementById(pageId);
+
       if (targetSection) {
         targetSection.classList.add('active');
       }
 
+
       const activeNav = document.getElementById('nav-' + pageId);
+
       if (activeNav) {
         activeNav.classList.add('active');
       }
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
     }
+
   </script>
 
 </body>
