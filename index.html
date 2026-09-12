@@ -9,6 +9,11 @@
   <!-- Favicon Buildora Studio -->
   <link rel="icon" type="image/png" href="https://i.postimg.cc/wvGDsjXM/Code-Generated-Image.png">
 
+  <!-- Fontes Google : Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -16,47 +21,93 @@
       padding: 0;
     }
 
+    /* THÈME CLAIR (PAR DÉFAUT) */
     :root {
-      --bg-body: #f4f5f7;
+      --bg-body: #f8fafc;
       --bg-surface: #ffffff;
-      --text-main: #171d25;
-      --text-sub: #5c6470;
+      --bg-surface-hover: #f1f5f9;
+      --border: #e2e8f0;
+      --border-hover: #cbd5e1;
+      
+      --text-main: #0f172a;
+      --text-sub: #475569;
+      --text-muted: #64748b;
+
       --brand: #2563eb;
       --brand-hover: #1d4ed8;
-      --border: #e2e8f0;
+      --brand-glow: rgba(37, 99, 235, 0.12);
+
+      --promo-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      --promo-text: #ffffff;
+      --promo-sub: #94a3b8;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      
       --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-      --radius: 10px;
+      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    /* THÈME SOMBRE (AUTOMATIQUE SI L'APPAREIL EST EN MODE SOMBRE) */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-body: #0b0f17;
+        --bg-surface: #111827;
+        --bg-surface-hover: #1f293d;
+        --border: #1f2937;
+        --border-hover: #374151;
+        
+        --text-main: #f9fafb;
+        --text-sub: #9ca3af;
+        --text-muted: #6b7280;
+
+        --brand: #3b82f6;
+        --brand-hover: #2563eb;
+        --brand-glow: rgba(59, 130, 246, 0.15);
+
+        --promo-bg: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+        --promo-text: #f9fafb;
+        --promo-sub: #9ca3af;
+        
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 12px 24px -10px rgba(0, 0, 0, 0.5);
+      }
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg-body);
       color: var(--text-main);
-      line-height: 1.5;
+      line-height: 1.6;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     body.loaded {
       overflow: auto;
     }
 
-    /* LOADER */
+    /* ÉCRAN DE CHARGEMENT */
     #loader {
       position: fixed;
       inset: 0;
       width: 100vw;
       height: 100vh;
-      background-color: var(--bg-surface);
+      background-color: var(--bg-body);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 9999;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
     }
 
     #loader.fade-out {
@@ -65,23 +116,21 @@
     }
 
     .spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid var(--border);
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
       border-top-color: var(--brand);
       border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 1rem;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 1.25rem;
     }
 
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
     }
 
     .loader-text {
-      font-size: 0.95rem;
+      font-size: 0.875rem;
       font-weight: 500;
       color: var(--text-sub);
       letter-spacing: -0.01em;
@@ -93,175 +142,221 @@
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .nav-container {
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto;
-      padding: 1rem 1.5rem;
+      padding: 0.875rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .brand {
-      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: var(--text-main);
       text-decoration: none;
       letter-spacing: -0.02em;
     }
 
-    .brand span {
+    .brand-accent {
       color: var(--brand);
     }
 
     .nav-links {
       display: flex;
-      gap: 1.5rem;
+      gap: 0.5rem;
       list-style: none;
+      background-color: var(--bg-body);
+      padding: 0.25rem;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
     }
 
     .nav-links a {
       color: var(--text-sub);
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 0.875rem;
       font-weight: 500;
-      transition: color 0.15s ease;
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      transition: all var(--transition-fast);
       cursor: pointer;
+      display: block;
     }
 
-    .nav-links a:hover,
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
     .nav-links a.active {
-      color: var(--brand);
+      color: #ffffff;
+      background-color: var(--brand);
+      box-shadow: 0 0 12px var(--brand-glow);
     }
 
-    /* SECTIONS */
+    /* STRUCTURE PRINCIPALE & SECTIONS */
+    main {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+      flex: 1;
+      width: 100%;
+    }
+
     .page-section {
       display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     .page-section.active {
       display: block;
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* BANNIÈRE IMAGE ALIGNÉE VERS LE HAUT */
-    .photo-preview-card {
-      position: relative;
-      background-color: var(--bg-surface);
+    /* AFFICHE PROMOTIONNELLE SPORTMAROC */
+    .promo-banner {
+      background: var(--promo-bg);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 2rem;
-      overflow: hidden;
-      max-height: 900px;
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      box-shadow: var(--shadow-md);
     }
 
-    .photo-preview-img {
-      width: 100%;
-      height: 500px;
-      object-fit: cover;
-      object-position: top; /* Centrage aligné vers le haut */
-      display: block;
+    .promo-content {
+      max-width: 700px;
     }
 
-    .btn-photo-access {
-      position: absolute;
-      bottom: 12px;
-      left: 12px;
+    .promo-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      background-color: #e11d48;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+
+    .promo-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--promo-text);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .promo-desc {
+      font-size: 0.95rem;
+      color: var(--promo-sub);
+      line-height: 1.5;
+    }
+
+    .btn-promo {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background-color: var(--brand);
-      color: #ffffff;
+      background-color: #ffffff;
+      color: #0f172a;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-md);
       text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 600;
-      padding: 0.5rem 0.9rem;
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.15s ease, transform 0.15s ease;
-      z-index: 2;
+      white-space: nowrap;
+      transition: all var(--transition-fast);
+      box-shadow: var(--shadow-sm);
     }
 
-    .btn-photo-access:hover {
-      background-color: var(--brand-hover);
+    .btn-promo:hover {
+      background-color: #f1f5f9;
       transform: translateY(-2px);
     }
 
-    .btn-photo-access svg {
-      width: 14px;
-      height: 14px;
+    .btn-promo svg {
+      width: 16px;
+      height: 16px;
       fill: currentColor;
     }
 
-    /* HERO */
+    /* HERO SECTION */
     .hero {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 3.5rem 1.5rem 2rem;
       text-align: left;
+      margin-bottom: 2rem;
+      max-width: 700px;
     }
 
     .hero h1 {
       font-size: 2.25rem;
       font-weight: 800;
+      line-height: 1.2;
       letter-spacing: -0.03em;
       margin-bottom: 0.75rem;
+      color: var(--text-main);
     }
 
     .hero p {
-      font-size: 1.1rem;
+      font-size: 1.125rem;
       color: var(--text-sub);
-      max-width: 600px;
+      font-weight: 400;
     }
 
-    /* MAIN */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 1rem 1.5rem 4rem;
-      flex: 1;
-      width: 100%;
-    }
-
-    /* APPLICATIONS */
+    /* GRILLE D'APPLICATIONS */
     .app-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.75rem;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 1.5rem;
     }
 
     .app-card {
       background-color: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+      transition: all var(--transition-normal);
+      position: relative;
+      box-shadow: var(--shadow-sm);
     }
 
     .app-card:hover {
+      border-color: var(--border-hover);
+      background-color: var(--bg-surface-hover);
+      transform: translateY(-4px);
       box-shadow: var(--shadow-md);
-      border-color: #cbd5e1;
     }
 
     .card-top {
       display: flex;
       align-items: flex-start;
       gap: 1rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
     }
 
     .app-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 8px;
-      background-color: #f1f5f9;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background-color: var(--bg-body);
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -270,14 +365,15 @@
     }
 
     .app-icon svg {
-      width: 22px;
-      height: 22px;
-      fill: var(--text-main);
+      width: 24px;
+      height: 24px;
+      fill: var(--brand);
     }
 
     .card-title-group h2 {
-      font-size: 1.1rem;
-      font-weight: 600;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
       line-height: 1.3;
     }
 
@@ -285,16 +381,17 @@
       display: inline-block;
       font-size: 0.75rem;
       font-weight: 600;
+      color: var(--brand);
+      margin-top: 0.2rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--brand);
-      margin-top: 0.25rem;
     }
 
     .app-desc {
       color: var(--text-sub);
-      font-size: 0.925rem;
-      margin-bottom: 1.5rem;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
       flex-grow: 1;
     }
 
@@ -302,23 +399,25 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-top: 1px solid #f1f5f9;
-      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
     }
 
     .app-status {
-      font-size: 0.8rem;
-      color: var(--text-sub);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      font-weight: 500;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.5rem;
     }
 
     .status-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background-color: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
     }
 
     .btn-launch {
@@ -327,16 +426,19 @@
       gap: 0.4rem;
       background-color: var(--brand);
       color: #ffffff;
+      border: 1px solid var(--brand);
       text-decoration: none;
       font-size: 0.875rem;
       font-weight: 600;
-      padding: 0.5rem 0.9rem;
-      border-radius: 6px;
-      transition: background-color 0.15s ease;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      transition: all var(--transition-fast);
     }
 
     .btn-launch:hover {
       background-color: var(--brand-hover);
+      border-color: var(--brand-hover);
+      box-shadow: 0 0 12px var(--brand-glow);
     }
 
     .btn-launch svg {
@@ -345,54 +447,59 @@
       fill: currentColor;
     }
 
-    /* CARTES DE CONTENU */
+    /* CARTES DE CONTENU (À propos, Contact, Droits) */
     .content-card {
       max-width: 800px;
-      margin: 2.5rem auto 0;
+      margin: 0 auto;
       background-color: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
       padding: 2.5rem;
       box-shadow: var(--shadow-sm);
     }
 
     .content-card h1 {
-      font-size: 2rem;
+      font-size: 1.875rem;
       font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.25rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
     }
 
     .content-card p {
       color: var(--text-sub);
-      font-size: 1.05rem;
+      font-size: 1rem;
       margin-bottom: 1.25rem;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
-    /* CONTACT */
+    .content-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* CONTACT SPÉCIFIQUE */
     .info-list {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      margin-top: 1.5rem;
+      gap: 1rem;
+      margin-top: 2rem;
     }
 
     .info-item {
       display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      padding: 1rem;
-      background-color: #f8fafc;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.25rem;
+      background-color: var(--bg-body);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: var(--radius-md);
     }
 
     .info-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 6px;
-      background-color: #ffffff;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-surface);
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -408,25 +515,24 @@
 
     .info-details label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--text-sub);
-      margin-bottom: 0.25rem;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
     }
 
-    .info-details a,
-    .info-details span {
-      font-size: 1.05rem;
+    .info-details a {
+      font-size: 1rem;
       font-weight: 600;
       color: var(--text-main);
       text-decoration: none;
+      transition: color var(--transition-fast);
     }
 
     .info-details a:hover {
       color: var(--brand);
-      text-decoration: underline;
     }
 
     /* FOOTER */
@@ -434,10 +540,12 @@
       background-color: var(--bg-surface);
       border-top: 1px solid var(--border);
       padding: 2rem 1.5rem;
+      margin-top: auto;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .footer-container {
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -449,7 +557,7 @@
     .footer-link {
       color: var(--text-sub);
       text-decoration: none;
-      transition: color 0.15s ease;
+      transition: color var(--transition-fast);
       cursor: pointer;
     }
 
@@ -458,10 +566,21 @@
       text-decoration: underline;
     }
 
-    /* MOBILE */
+    /* ADAPTATION MOBILE */
     @media (max-width: 640px) {
       .hero h1 {
-        font-size: 1.75rem;
+        font-size: 1.875rem;
+      }
+
+      .promo-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.5rem;
+      }
+
+      .btn-promo {
+        width: 100%;
+        justify-content: center;
       }
 
       .content-card {
@@ -479,25 +598,8 @@
         gap: 1rem;
       }
 
-      .nav-links {
-        gap: 1rem;
-      }
-
       .app-grid {
         grid-template-columns: 1fr;
-      }
-
-      .photo-preview-card,
-      .photo-preview-img {
-        height: 180px;
-        max-height: 180px;
-      }
-
-      .btn-photo-access {
-        bottom: 10px;
-        left: 10px;
-        font-size: 0.75rem;
-        padding: 0.4rem 0.75rem;
       }
     }
   </style>
@@ -516,7 +618,7 @@
     <div class="nav-container">
 
       <a href="#" class="brand" onclick="showPage('Store'); return false;">
-        Buildora<span>Studio</span>
+        Buildora<span class="brand-accent">Studio</span>
       </a>
 
       <ul class="nav-links">
@@ -525,13 +627,11 @@
             Store
           </a>
         </li>
-
         <li>
           <a id="nav-apropos" onclick="showPage('apropos')">
             À propos
           </a>
         </li>
-
         <li>
           <a id="nav-contact" onclick="showPage('contact')">
             Contact
@@ -544,15 +644,30 @@
 
   <main>
 
-    <!-- BANNIÈRE PHOTO CENTRÉE VERS LE HAUT -->
-
-    <!-- SECTION 1 : PROJETS -->
+    <!-- SECTION 1 : STORE -->
     <section id="Store" class="page-section active">
 
+      <!-- AFFICHE PROMOTIONNELLE SPORTMAROC -->
+      <aside class="promo-banner">
+        <div class="promo-content">
+          <span class="promo-badge">Création Buildora</span>
+          <h2 class="promo-title">Découvrez Sportmaroc</h2>
+          <p class="promo-desc">
+            Le nouveau portail conçu et développé par nos soins pour suivre toute l'actualité sportive au Maroc.
+          </p>
+        </div>
+        <a href="http://sportmaroc.ma" class="btn-promo">
+          Visiter le site
+          <svg viewBox="0 0 24 24">
+            <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
+          </svg>
+        </a>
+      </aside>
+
       <header class="hero">
-        <h1>Nos applications</h1>
+        <h1>Suite d'applications & outils web</h1>
         <p>
-          Retrouvez ici l'ensemble des outils web développés par notre studio.
+          Découvrez les solutions logicielles développées par Buildora Studio pour optimiser votre gestion, vos projets et vos flux de travail.
         </p>
       </header>
 
@@ -562,35 +677,29 @@
         <article class="app-card">
           <div>
             <div class="card-top">
-
               <div class="app-icon">
                 <svg viewBox="0 0 24 24">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                 </svg>
               </div>
-
               <div class="card-title-group">
                 <h2>Torreia</h2>
                 <span class="card-tag">Productivité</span>
               </div>
-
             </div>
 
             <p class="app-desc">
-             Torreia est le logiciel de gestion de caisse nouvelle génération conçu pour les cafés et coffee shops. Il transforme chaque transaction en données exploitables pour piloter vos ventes, optimiser vos stocks et simplifier votre quotidien.
+              Torreia est le logiciel de gestion de caisse nouvelle génération conçu pour les cafés et coffee shops. Il transforme chaque transaction en données exploitables pour piloter vos ventes, optimiser vos stocks et simplifier votre quotidien.
             </p>
           </div>
 
           <div class="card-footer">
             <span class="app-status">
               <span class="status-dot"></span>
-              V1.2.1
+              V 1.2.1
             </span>
 
-            <a
-              href="https://buildorastudio2023.github.io/Torreia/#download"
-              class="btn-launch"
-            >
+            <a href="https://buildorastudio2023.github.io/Torreia/#download" class="btn-launch">
               Ouvrir
               <svg viewBox="0 0 24 24">
                 <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
@@ -603,35 +712,29 @@
         <article class="app-card">
           <div>
             <div class="card-top">
-
               <div class="app-icon">
                 <svg viewBox="0 0 24 24">
                   <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
                 </svg>
               </div>
-
               <div class="card-title-group">
                 <h2>EduLycée</h2>
-                <span class="card-tag">Éducation</span>
+                <span class="card-tag">Éducation & Apprentissage</span>
               </div>
-
             </div>
 
             <p class="app-desc">
-             Platforme d'apprentissage
+              Plateforme d'apprentissage numérique interactive conçue pour accompagner les lycéens dans leur suivi scolaire et la révision de leurs programmes.
             </p>
           </div>
 
           <div class="card-footer">
             <span class="app-status">
               <span class="status-dot"></span>
-              
+              V 1.0
             </span>
 
-            <a
-              href="https://buildorastudio2023.github.io/Edu-Lycee/"
-              class="btn-launch"
-            >
+            <a href="https://buildorastudio2023.github.io/Edu-Lycee/" class="btn-launch">
               Ouvrir
               <svg viewBox="0 0 24 24">
                 <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
@@ -644,35 +747,29 @@
         <article class="app-card">
           <div>
             <div class="card-top">
-
               <div class="app-icon">
                 <svg viewBox="0 0 24 24">
                   <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/>
                 </svg>
               </div>
-
               <div class="card-title-group">
                 <h2>Klyvero</h2>
-                <span class="card-tag">Montage vidéo</span>
+                <span class="card-tag">Montage & Production Vidéo</span>
               </div>
-
             </div>
 
             <p class="app-desc">
-             Gérer vos montages vidéos en toute facilité.
+              Solution fluide de gestion et d'organisation pour vos projets de montage vidéo, simplifiant les étapes de dérochage et d'assemblage.
             </p>
           </div>
 
           <div class="card-footer">
             <span class="app-status">
               <span class="status-dot"></span>
-              V1.0
+              V 1.0
             </span>
 
-            <a
-              href="https://buildorastudio2023.github.io/Klyvero/"
-              class="btn-launch"
-            >
+            <a href="https://buildorastudio2023.github.io/Klyvero/" class="btn-launch">
               Ouvrir
               <svg viewBox="0 0 24 24">
                 <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
@@ -684,209 +781,121 @@
       </div>
     </section>
 
-
     <!-- SECTION 2 : À PROPOS -->
     <section id="apropos" class="page-section">
-
       <article class="content-card">
-
         <h1>À propos de Buildora Studio</h1>
-
         <p>
-          BuildoraStudio, anciennement Meta Service, est un projet commencé
-          en 2023 afin d’expérimenter différents concepts numériques.
+          BuildoraStudio, anciennement Meta Service, est un projet commencé en 2023 afin d’expérimenter différents concepts numériques.
         </p>
-
         <p>
-          Au départ, le projet était principalement consacré au développement
-          de petits jeux en 2D. Cette première période nous a permis de
-          découvrir progressivement la programmation, la conception
-          d’interfaces, la logique des jeux et la création d’expériences
-          interactives. À travers différents prototypes et projets
-          expérimentaux, nous avons pu apprendre en pratiquant, tester
-          plusieurs concepts et acquérir une première expérience dans le
-          développement logiciel.
+          Au départ, le projet était principalement consacré au développement de petits jeux en 2D. Cette première période nous a permis de découvrir progressivement la programmation, la conception d’interfaces, la logique des jeux et la création d’expériences interactives. À travers différents prototypes et projets expérimentaux, nous avons pu apprendre en pratiquant, tester plusieurs concepts et acquérir une première expérience dans le développement logiciel.
         </p>
-
         <p>
-          En 2025, cette expérience a évolué vers un projet plus ambitieux :
-          la création d’un réseau social privé fonctionnel, développé et
-          utilisé dans un cadre personnel. Cette étape nous a permis de
-          dépasser le simple développement de prototypes pour travailler
-          sur une application plus complète, avec une véritable interface,
-          différentes fonctionnalités et une logique de fonctionnement
-          structurée.
+          En 2025, cette expérience a évolué vers un projet plus ambitieux : la création d’un réseau social privé fonctionnel, développé et utilisé dans un cadre personnel. Cette étape nous a permis de dépasser le simple développement de prototypes pour travailler sur une application plus complète, avec une véritable interface, différentes fonctionnalités et une logique de fonctionnement structurée.
         </p>
-
         <p>
-          En 2026, BuildoraStudio a pris une nouvelle direction avec le début
-          du développement d’applications de gestion destinées aux commerces.
-          L’objectif est de concevoir des outils simples, modernes et adaptés
-          aux besoins quotidiens des professionnels, notamment pour la gestion
-          des ventes, des articles, des stocks et des opérations commerciales.
+          En 2026, BuildoraStudio a pris une nouvelle direction avec le début du développement d’applications de gestion destinées aux commerces. L’objectif est de concevoir des outils simples, modernes et adaptés aux besoins quotidiens des professionnels, notamment pour la gestion des ventes, des articles, des stocks et des opérations commerciales.
         </p>
-
         <p>
-          Cette évolution marque une nouvelle étape pour BuildoraStudio,
-          avec la volonté de transformer les expérimentations des premières
-          années en véritables solutions numériques utiles et accessibles
-          aux commerces.
+          Cette évolution marque une nouvelle étape pour BuildoraStudio, avec la volonté de transformer les expérimentations des premières années en véritables solutions numériques utiles et accessibles aux commerces.
         </p>
-
       </article>
-
     </section>
-
 
     <!-- SECTION 3 : CONTACT -->
     <section id="contact" class="page-section">
-
       <div class="content-card">
-
         <h1>Contactez-nous</h1>
-
         <p>
-          Pour toute question, demande de partenariat ou information
-          complémentaire, retrouvez nos coordonnées ci-dessous.
+          Pour toute question, demande de partenariat ou information complémentaire, retrouvez nos coordonnées ci-dessous.
         </p>
-
         <div class="info-list">
-
-          <!-- Adresse Email -->
           <div class="info-item">
-
             <div class="info-icon">
               <svg viewBox="0 0 24 24">
                 <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
               </svg>
             </div>
-
             <div class="info-details">
               <label>Adresse E-mail</label>
-
-              <a href="mailto:metaserviceofficiel@gmail.com">
-                metaserviceofficiel@gmail.com
-              </a>
+              <a href="mailto:metaserviceofficiel@gmail.com">metaserviceofficiel@gmail.com</a>
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- SECTION 4 : DROITS RÉSERVÉS / MENTIONS LÉGALES -->
+    <!-- SECTION 4 : MENTIONS LÉGALES -->
     <section id="droits" class="page-section">
-
       <article class="content-card">
-
         <h1>Mentions légales & droits d'auteur</h1>
-
         <p>
-          Les contenus présents sur ce site, notamment les textes, logiciels,
-          interfaces, éléments graphiques, logos et créations originales,
-          sont présentés par BuildoraStudio.
+          Les contenus présents sur ce site, notamment les textes, logiciels, interfaces, éléments graphiques, logos et créations originales, sont présentés par BuildoraStudio.
         </p>
-
         <p>
-          Toute utilisation, reproduction ou redistribution non autorisée
-          de ces éléments est refusée, sous réserve des droits et exceptions
-          prévus par les lois applicables.
+          Toute utilisation, reproduction ou redistribution non autorisée de ces éléments est refusée, sous réserve des droits et exceptions prévus par les lois applicables.
         </p>
-
         <p>
-          BuildoraStudio se réserve le droit de faire valoir ses droits
-          lorsque la législation applicable le permet.
+          BuildoraStudio se réserve le droit de faire valoir ses droits lorsque la législation applicable le permet.
         </p>
-
       </article>
-
     </section>
 
   </main>
 
-
   <!-- PIED DE PAGE -->
   <footer>
-
     <div class="footer-container">
-
       <p>
-        &copy; 2026 Buildora Studio.
-        <a
-          href="#"
-          class="footer-link"
-          onclick="showPage('droits'); return false;"
-        >
+        &copy; 2026 Buildora Studio. 
+        <a href="#" class="footer-link" onclick="showPage('droits'); return false;">
           Tous droits réservés.
         </a>
       </p>
-
     </div>
-
   </footer>
-
 
   <!-- JAVASCRIPT -->
   <script>
-
     /* Écran de chargement */
     window.addEventListener('load', function() {
-
       const loader = document.getElementById('loader');
-
       loader.classList.add('fade-out');
-
       document.body.classList.add('loaded');
 
       setTimeout(function() {
         loader.style.display = 'none';
-      }, 500);
-
+      }, 400);
     });
-
 
     /* Navigation entre les sections */
     function showPage(pageId) {
-
       const sections = document.querySelectorAll('.page-section');
-
       sections.forEach(function(section) {
         section.classList.remove('active');
       });
 
-
       const navLinks = document.querySelectorAll('.nav-links a');
-
       navLinks.forEach(function(link) {
         link.classList.remove('active');
       });
 
-
       const targetSection = document.getElementById(pageId);
-
       if (targetSection) {
         targetSection.classList.add('active');
       }
 
-
       const activeNav = document.getElementById('nav-' + pageId);
-
       if (activeNav) {
         activeNav.classList.add('active');
       }
-
 
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
-
     }
-
   </script>
 
 </body>
