@@ -296,6 +296,107 @@
       fill: currentColor;
     }
 
+    /* SECTION CLIENTS VALORISÉE */
+    .clients-section {
+      margin-bottom: 3rem;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--brand);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      transition: all var(--transition-normal);
+    }
+
+    .clients-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .clients-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--brand);
+      background-color: var(--brand-glow);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 0.5rem;
+    }
+
+    .clients-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .clients-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .client-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem;
+      background-color: var(--bg-body);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: all var(--transition-normal);
+    }
+
+    .client-card:hover {
+      border-color: var(--brand);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .client-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      background-color: var(--bg-surface);
+    }
+
+    .client-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .client-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .client-status {
+      font-size: 0.8125rem;
+      color: var(--text-sub);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.3rem;
+    }
+
+    .status-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #3b82f6;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+    }
+
     /* HERO SECTION */
     .hero {
       text-align: left;
@@ -672,6 +773,44 @@
           </svg>
         </a>
       </aside>
+
+      <!-- SECTION PROJETS CLIENTS EN COURS (VALORISÉE) -->
+      <section class="clients-section">
+        <div class="clients-header">
+          <span class="clients-badge">
+            Partenariats & Confiance
+          </span>
+          <h2 class="clients-title">Projets clients en cours de réalisation</h2>
+        </div>
+        
+        <div class="clients-grid">
+
+          <!-- Client 1 -->
+          <div class="client-card">
+            <img src="https://via.placeholder.com/48" alt="Logo Client A" class="client-logo">
+            <div class="client-info">
+              <span class="client-name">Nom du Client A</span>
+              <span class="client-status">
+                <span class="status-pulse"></span>
+                Développement actif
+              </span>
+            </div>
+          </div>
+
+          <!-- Client 2 -->
+          <div class="client-card">
+            <img src="https://via.placeholder.com/48" alt="Logo Client B" class="client-logo">
+            <div class="client-info">
+              <span class="client-name">Nom du Client B</span>
+              <span class="client-status">
+                <span class="status-pulse"></span>
+                Phase de conception
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </section>
 
       <header class="hero">
         <h1>Suite d'applications & outils web</h1>
