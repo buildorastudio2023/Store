@@ -1,18 +1,24 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="theme-color" content="#f8fafc">
   <title>Buildora Studio</title>
-
-  <!-- Favicon Buildora Studio -->
   <link rel="icon" type="image/png" href="https://i.postimg.cc/wvGDsjXM/Code-Generated-Image.png">
-
-  <!-- Fontes Google : Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Statistiques -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1TYSD3XF4S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-1TYSD3XF4S');
+  </script>
 
   <style>
     *, *::before, *::after {
@@ -21,98 +27,91 @@
       padding: 0;
     }
 
-    /* THÈME CLAIR (PAR DÉFAUT) */
     :root {
-      --bg-body: #f8fafc;
-      --bg-surface: #ffffff;
-      --bg-surface-hover: #f1f5f9;
+      color-scheme: light dark;
+      --bg: #f8fafc;
+      --surface: #fff;
+      --hover: #f1f5f9;
       --border: #e2e8f0;
       --border-hover: #cbd5e1;
-      
-      --text-main: #0f172a;
-      --text-sub: #475569;
-      --text-muted: #64748b;
-
+      --text: #0f172a;
+      --sub: #475569;
+      --muted: #64748b;
       --brand: #2563eb;
       --brand-hover: #1d4ed8;
-      --brand-glow: rgba(37, 99, 235, 0.12);
-
-      --promo-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      --promo-text: #ffffff;
+      --glow: rgba(37, 99, 235, .12);
+      --promo: linear-gradient(135deg, #1e293b, #0f172a);
+      --promo-text: #fff;
       --promo-sub: #94a3b8;
-
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
-
-      --transition-fast: 0.15s ease;
-      --transition-normal: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.05);
+      --shadow-md: 0 10px 25px -5px rgba(0,0,0,.05);
     }
 
-    /* THÈME SOMBRE (AUTOMATIQUE SI L'APPAREIL EST EN MODE SOMBRE) */
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg-body: #0b0f17;
-        --bg-surface: #111827;
-        --bg-surface-hover: #1f293d;
+        --bg: #0b0f17;
+        --surface: #111827;
+        --hover: #1f293d;
         --border: #1f2937;
         --border-hover: #374151;
-        
-        --text-main: #f9fafb;
-        --text-sub: #9ca3af;
-        --text-muted: #6b7280;
-
+        --text: #f9fafb;
+        --sub: #9ca3af;
+        --muted: #6b7280;
         --brand: #3b82f6;
         --brand-hover: #2563eb;
-        --brand-glow: rgba(59, 130, 246, 0.15);
-
-        --promo-bg: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+        --glow: rgba(59,130,246,.15);
+        --promo: linear-gradient(135deg,#111827,#1f2937);
         --promo-text: #f9fafb;
         --promo-sub: #9ca3af;
-        
-        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-        --shadow-md: 0 12px 24px -10px rgba(0, 0, 0, 0.5);
+        --shadow-sm: 0 1px 3px rgba(0,0,0,.3);
+        --shadow-md: 0 12px 24px -10px rgba(0,0,0,.5);
       }
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-body);
-      color: var(--text-main);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.6;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
-      overflow: hidden;
       -webkit-font-smoothing: antialiased;
-      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    body.loaded {
-      overflow: auto;
+    body.app-open {
+      overflow: hidden;
     }
 
-    /* ÉCRAN DE CHARGEMENT */
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* Chargement */
     #loader {
       position: fixed;
       inset: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: var(--bg-body);
+      z-index: 9999;
+      background: var(--bg);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
+      gap: 18px;
+      transition: opacity .3s, visibility .3s;
     }
 
     #loader.fade-out {
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
     }
 
     .spinner {
@@ -121,8 +120,7 @@
       border: 3px solid var(--border);
       border-top-color: var(--brand);
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-bottom: 1.25rem;
+      animation: spin .8s linear infinite;
     }
 
     @keyframes spin {
@@ -130,40 +128,36 @@
     }
 
     .loader-text {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text-sub);
-      letter-spacing: -0.01em;
+      color: var(--sub);
+      font-size: .875rem;
     }
 
-    /* NAVIGATION */
+    /* Navigation */
     .navbar {
-      background-color: var(--bg-surface);
+      background: var(--surface);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 100;
-      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .nav-container {
       max-width: 1140px;
-      margin: 0 auto;
-      padding: 0.875rem 1.5rem;
+      margin: auto;
+      padding: .875rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 1rem;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
       font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--text-main);
+      font-weight: 800;
+      color: var(--text);
       text-decoration: none;
-      letter-spacing: -0.02em;
+      letter-spacing: -.02em;
+      white-space: nowrap;
     }
 
     .brand-accent {
@@ -172,61 +166,60 @@
 
     .nav-links {
       display: flex;
-      gap: 0.5rem;
+      gap: .25rem;
       list-style: none;
-      background-color: var(--bg-body);
-      padding: 0.25rem;
+      background: var(--bg);
+      padding: .25rem;
       border: 1px solid var(--border);
-      border-radius: 9999px;
+      border-radius: 999px;
     }
 
     .nav-links a {
-      color: var(--text-sub);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      padding: 0.4rem 1rem;
-      border-radius: 9999px;
-      transition: all var(--transition-fast);
-      cursor: pointer;
       display: block;
+      padding: .4rem 1rem;
+      color: var(--sub);
+      font-size: .875rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 999px;
+      cursor: pointer;
     }
 
     .nav-links a:hover {
-      color: var(--text-main);
+      color: var(--text);
     }
 
     .nav-links a.active {
-      color: #ffffff;
-      background-color: var(--brand);
-      box-shadow: 0 0 12px var(--brand-glow);
+      color: #fff;
+      background: var(--brand);
     }
 
-    /* STRUCTURE PRINCIPALE & SECTIONS */
+    /* Pages */
     main {
+      width: 100%;
       max-width: 1140px;
       margin: 0 auto;
       padding: 2rem 1.5rem 5rem;
       flex: 1;
-      width: 100%;
     }
 
     .page-section {
       display: none;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     .page-section.active {
       display: block;
-      opacity: 1;
-      transform: translateY(0);
+      animation: page-in .2s ease;
     }
 
-    /* AFFICHE PROMOTIONNELLE SPORTMAROC */
+    @keyframes page-in {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Promotion */
     .promo-banner {
-      background: var(--promo-bg);
+      background: var(--promo);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 2rem;
@@ -244,68 +237,65 @@
 
     .promo-badge {
       display: inline-block;
-      font-size: 0.75rem;
+      color: #fff;
+      background: #e11d48;
+      font-size: .75rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #ffffff;
-      background-color: #e11d48;
-      padding: 0.2rem 0.6rem;
+      letter-spacing: .05em;
+      padding: .2rem .6rem;
       border-radius: 4px;
-      margin-bottom: 0.75rem;
+      margin-bottom: .75rem;
     }
 
     .promo-title {
+      color: var(--promo-text);
       font-size: 1.5rem;
       font-weight: 800;
-      color: var(--promo-text);
-      letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
+      margin-bottom: .5rem;
     }
 
     .promo-desc {
-      font-size: 0.95rem;
       color: var(--promo-sub);
-      line-height: 1.5;
+      font-size: .95rem;
     }
 
     .btn-promo {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      background-color: #ffffff;
+      justify-content: center;
+      gap: .5rem;
+      padding: .75rem 1.25rem;
+      background: #fff;
       color: #0f172a;
-      font-size: 0.9rem;
+      font-size: .9rem;
       font-weight: 700;
-      padding: 0.75rem 1.25rem;
-      border-radius: var(--radius-md);
       text-decoration: none;
+      border-radius: var(--radius-md);
       white-space: nowrap;
-      transition: all var(--transition-fast);
-      box-shadow: var(--shadow-sm);
     }
 
     .btn-promo:hover {
-      background-color: #f1f5f9;
-      transform: translateY(-2px);
+      background: #f1f5f9;
     }
 
-    .btn-promo svg {
+    .btn-promo svg,
+    .btn-launch svg {
       width: 16px;
       height: 16px;
       fill: currentColor;
+      flex-shrink: 0;
     }
 
-    /* SECTION CLIENTS VALORISÉE */
+    /* Réalisations */
     .clients-section {
       margin-bottom: 3rem;
-      background-color: var(--bg-surface);
+      padding: 2rem;
+      background: var(--surface);
       border: 1px solid var(--border);
       border-left: 4px solid var(--brand);
       border-radius: var(--radius-lg);
-      padding: 2rem;
       box-shadow: var(--shadow-md);
-      transition: all var(--transition-normal);
     }
 
     .clients-header {
@@ -313,30 +303,25 @@
     }
 
     .clients-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.75rem;
+      display: inline-block;
+      margin-bottom: .5rem;
+      padding: .25rem .75rem;
+      border-radius: 999px;
+      color: var(--brand);
+      background: var(--glow);
+      font-size: .75rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--brand);
-      background-color: var(--brand-glow);
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      margin-bottom: 0.5rem;
     }
 
     .clients-title {
       font-size: 1.35rem;
       font-weight: 800;
-      color: var(--text-main);
-      letter-spacing: -0.02em;
     }
 
     .clients-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
       gap: 1.25rem;
     }
 
@@ -345,16 +330,9 @@
       align-items: center;
       gap: 1rem;
       padding: 1.25rem;
-      background-color: var(--bg-body);
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      transition: all var(--transition-normal);
-    }
-
-    .client-card:hover {
-      border-color: var(--brand);
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-sm);
     }
 
     .client-logo {
@@ -364,85 +342,82 @@
       object-fit: cover;
       flex-shrink: 0;
       border: 1px solid var(--border);
-      background-color: var(--bg-surface);
-    }
-
-    .client-info {
-      display: flex;
-      flex-direction: column;
+      background: var(--surface);
     }
 
     .client-name {
       font-size: 1rem;
       font-weight: 700;
-      color: var(--text-main);
-      line-height: 1.2;
     }
 
     .client-status {
-      font-size: 0.8125rem;
-      color: var(--text-sub);
-      font-weight: 500;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      margin-top: 0.3rem;
+      gap: .4rem;
+      margin-top: .3rem;
+      color: var(--sub);
+      font-size: .8125rem;
     }
 
-    .status-pulse {
+    .status-pulse,
+    .status-dot {
+      display: inline-block;
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background-color: #3b82f6;
-      box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+      flex-shrink: 0;
     }
 
-    /* HERO SECTION */
+    .status-pulse {
+      background: #3b82f6;
+    }
+
+    .status-dot {
+      background: #10b981;
+    }
+
+    /* Présentation */
     .hero {
-      text-align: left;
-      margin-bottom: 2rem;
       max-width: 700px;
+      margin-bottom: 2rem;
     }
 
     .hero h1 {
       font-size: 2.25rem;
       font-weight: 800;
       line-height: 1.2;
-      letter-spacing: -0.03em;
-      margin-bottom: 0.75rem;
-      color: var(--text-main);
+      letter-spacing: -.03em;
+      margin-bottom: .75rem;
     }
 
     .hero p {
+      color: var(--sub);
       font-size: 1.125rem;
-      color: var(--text-sub);
-      font-weight: 400;
     }
 
-    /* GRILLE D'APPLICATIONS */
+    /* Applications */
     .app-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      grid-template-columns: repeat(auto-fill,minmax(min(100%,330px),1fr));
       gap: 1.5rem;
     }
 
     .app-card {
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.75rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: all var(--transition-normal);
-      position: relative;
+      padding: 1.75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       box-shadow: var(--shadow-sm);
+      transition: transform .2s, background .2s, border-color .2s;
     }
 
     .app-card:hover {
       border-color: var(--border-hover);
-      background-color: var(--bg-surface-hover);
-      transform: translateY(-4px);
+      background: var(--hover);
+      transform: translateY(-3px);
       box-shadow: var(--shadow-md);
     }
 
@@ -456,13 +431,13 @@
     .app-icon {
       width: 48px;
       height: 48px;
-      border-radius: var(--radius-md);
-      background-color: var(--bg-body);
-      border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
     }
 
     .app-icon svg {
@@ -474,111 +449,93 @@
     .card-title-group h2 {
       font-size: 1.15rem;
       font-weight: 700;
-      color: var(--text-main);
       line-height: 1.3;
     }
 
     .card-tag {
       display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 600;
+      margin-top: .2rem;
       color: var(--brand);
-      margin-top: 0.2rem;
+      font-size: .75rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: .03em;
     }
 
     .app-desc {
-      color: var(--text-sub);
-      font-size: 0.9375rem;
-      line-height: 1.6;
       margin-bottom: 1.75rem;
-      flex-grow: 1;
+      color: var(--sub);
+      font-size: .9375rem;
+      line-height: 1.6;
     }
 
     .card-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: .75rem;
       border-top: 1px solid var(--border);
       padding-top: 1.25rem;
     }
 
     .app-status {
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-      font-weight: 500;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background-color: #10b981;
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+      gap: .5rem;
+      color: var(--muted);
+      font-size: .8125rem;
+      font-weight: 500;
     }
 
     .btn-launch {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      background-color: var(--brand);
-      color: #ffffff;
+      justify-content: center;
+      gap: .4rem;
+      padding: .5rem 1rem;
+      background: var(--brand);
+      color: #fff;
       border: 1px solid var(--brand);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 600;
-      padding: 0.5rem 1rem;
       border-radius: var(--radius-sm);
-      transition: all var(--transition-fast);
+      text-decoration: none;
+      font-size: .875rem;
+      font-weight: 600;
+      cursor: pointer;
     }
 
     .btn-launch:hover {
-      background-color: var(--brand-hover);
+      background: var(--brand-hover);
       border-color: var(--brand-hover);
-      box-shadow: 0 0 12px var(--brand-glow);
     }
 
-    .btn-launch svg {
-      width: 14px;
-      height: 14px;
-      fill: currentColor;
-    }
-
-    /* CARTES DE CONTENU (À propos, Contact, Droits) */
+    /* Pages À propos, Contact et Mentions légales */
     .content-card {
       max-width: 800px;
       margin: 0 auto;
-      background-color: var(--bg-surface);
+      padding: 2.5rem;
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 2.5rem;
       box-shadow: var(--shadow-sm);
     }
 
     .content-card h1 {
       font-size: 1.875rem;
       font-weight: 800;
-      letter-spacing: -0.02em;
       margin-bottom: 1.5rem;
-      color: var(--text-main);
     }
 
     .content-card p {
-      color: var(--text-sub);
+      color: var(--sub);
       font-size: 1rem;
-      margin-bottom: 1.25rem;
       line-height: 1.7;
+      margin-bottom: 1.25rem;
     }
 
     .content-card p:last-child {
       margin-bottom: 0;
     }
 
-    /* CONTACT SPÉCIFIQUE */
     .info-list {
       display: flex;
       flex-direction: column;
@@ -591,21 +548,22 @@
       align-items: center;
       gap: 1.25rem;
       padding: 1.25rem;
-      background-color: var(--bg-body);
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
+      overflow-wrap: anywhere;
     }
 
     .info-icon {
       width: 44px;
       height: 44px;
-      border-radius: var(--radius-sm);
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
     }
 
     .info-icon svg {
@@ -616,49 +574,43 @@
 
     .info-details label {
       display: block;
-      font-size: 0.75rem;
+      color: var(--muted);
+      font-size: .75rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      margin-bottom: 0.2rem;
     }
 
     .info-details a {
-      font-size: 1rem;
+      color: var(--text);
       font-weight: 600;
-      color: var(--text-main);
       text-decoration: none;
-      transition: color var(--transition-fast);
     }
 
     .info-details a:hover {
       color: var(--brand);
     }
 
-    /* FOOTER */
+    /* Pied de page */
     footer {
-      background-color: var(--bg-surface);
-      border-top: 1px solid var(--border);
-      padding: 2rem 1.5rem;
       margin-top: auto;
-      transition: background-color 0.3s ease, border-color 0.3s ease;
+      padding: 2rem 1.5rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
     }
 
     .footer-container {
       max-width: 1140px;
-      margin: 0 auto;
+      margin: auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.875rem;
-      color: var(--text-sub);
+      color: var(--sub);
+      font-size: .875rem;
     }
 
     .footer-link {
-      color: var(--text-sub);
+      color: var(--sub);
       text-decoration: none;
-      transition: color var(--transition-fast);
       cursor: pointer;
     }
 
@@ -667,21 +619,124 @@
       text-decoration: underline;
     }
 
-    /* ADAPTATION MOBILE */
+    /* Visionneuse : l'application occupe tout l'écran, sans barre supérieure */
+    #app-viewer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      background: #fff;
+    }
+
+    #app-viewer.visible {
+      display: block;
+    }
+
+    #app-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #fff;
+    }
+
+    #app-error {
+      display: none;
+      position: absolute;
+      inset: 0;
+      padding: 2rem;
+      background: var(--bg);
+      color: var(--text);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    #app-error.visible {
+      display: flex;
+    }
+
+    .error-card {
+      max-width: 520px;
+      padding: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+
+    .error-card h2 {
+      margin-bottom: .75rem;
+    }
+
+    .error-card p {
+      color: var(--sub);
+      margin-bottom: 1.25rem;
+    }
+
+    .error-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: .75rem;
+    }
+
+    .error-actions button,
+    .error-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .65rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--brand);
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .error-actions a {
+      background: var(--surface);
+      color: var(--text);
+    }
+
     @media (max-width: 640px) {
+      .nav-container {
+        flex-direction: column;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: .4rem .8rem;
+      }
+
+      main {
+        padding: 1.5rem 1rem 3rem;
+      }
+
       .hero h1 {
         font-size: 1.875rem;
       }
 
       .promo-banner {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         padding: 1.5rem;
       }
 
       .btn-promo {
         width: 100%;
-        justify-content: center;
+      }
+
+      .clients-section {
+        padding: 1.25rem;
       }
 
       .content-card {
@@ -693,71 +748,35 @@
         gap: 1rem;
         text-align: center;
       }
-
-      .nav-container {
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .app-grid {
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 </head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1TYSD3XF4S"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-1TYSD3XF4S');
-</script>
 
 <body>
-
-  <!-- Écran de chargement -->
+  <!-- Chargement du catalogue -->
   <div id="loader">
     <div class="spinner"></div>
     <div class="loader-text">Chargement des ressources...</div>
   </div>
 
-  <!-- Navigation -->
-  <nav class="navbar">
+  <!-- Navigation du catalogue -->
+  <nav class="navbar" id="main-navbar">
     <div class="nav-container">
-
       <a href="#" class="brand" onclick="showPage('Store'); return false;">
         Buildora<span class="brand-accent">Studio</span>
       </a>
 
       <ul class="nav-links">
-        <li>
-          <a id="nav-Store" class="active" onclick="showPage('Store')">
-            Store
-          </a>
-        </li>
-        <li>
-          <a id="nav-apropos" onclick="showPage('apropos')">
-            À propos
-          </a>
-        </li>
-        <li>
-          <a id="nav-contact" onclick="showPage('contact')">
-            Contact
-          </a>
-        </li>
+        <li><a id="nav-Store" class="active" href="#store" onclick="showPage('Store'); return false;">Store</a></li>
+        <li><a id="nav-apropos" href="#apropos" onclick="showPage('apropos'); return false;">À propos</a></li>
+        <li><a id="nav-contact" href="#contact" onclick="showPage('contact'); return false;">Contact</a></li>
       </ul>
-
     </div>
   </nav>
 
-  <main>
-
-    <!-- SECTION 1 : STORE -->
+  <main id="main-content">
+    <!-- STORE -->
     <section id="Store" class="page-section active">
-
-      <!-- AFFICHE PROMOTIONNELLE SPORTMAROC -->
       <aside class="promo-banner">
         <div class="promo-content">
           <span class="promo-badge">Création Buildora</span>
@@ -766,39 +785,37 @@
             Le nouveau portail conçu et développé par nos soins pour suivre toute l'actualité sportive au Maroc.
           </p>
         </div>
-        <a href="http://sportmaroc.ma" class="btn-promo">
+        <!-- SportMaroc conserve son lien externe -->
+        <a href="http://sportmaroc.ma" class="btn-promo" target="_blank" rel="noopener noreferrer">
           Visiter le site
-          <svg viewBox="0 0 24 24">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
           </svg>
         </a>
       </aside>
 
-      <!-- SECTION PROJETS CLIENTS EN COURS (VALORISÉE) -->
       <section class="clients-section">
         <div class="clients-header">
-          <span class="clients-badge">
-            Nos Réalisations
-          </span>
+          <span class="clients-badge">Nos réalisations</span>
           <h2 class="clients-title">Site conçu par Buildora Studio</h2>
         </div>
-        
-        <div class="clients-grid">
 
-          <!-- Client 1 -->
+        <div class="clients-grid">
           <div class="client-card">
-            <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/112_logo.jpg/960px-112_logo.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail&_=20140626092429" alt="Logo Client A" class="client-logo">
-            <div class="client-info">
-              <span class="client-name">112 Opérateur</span>
-              <span class="client-status">
+            <img
+              src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/112_logo.jpg/960px-112_logo.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail&_=20140626092429"
+              alt="Logo du 112"
+              class="client-logo"
+              loading="lazy"
+            >
+            <div>
+              <div class="client-name">112 Opérateur</div>
+              <div class="client-status">
                 <span class="status-pulse"></span>
                 En attente de déploiement
-              </span>
+              </div>
             </div>
           </div>
-          
-          </div>
-
         </div>
       </section>
 
@@ -810,13 +827,12 @@
       </header>
 
       <div class="app-grid">
-
-        <!-- Application 1 -->
+        <!-- Torreia -->
         <article class="app-card">
           <div>
             <div class="card-top">
               <div class="app-icon">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                 </svg>
               </div>
@@ -825,101 +841,94 @@
                 <span class="card-tag">Productivité</span>
               </div>
             </div>
-
             <p class="app-desc">
               Torreia est le logiciel de gestion de caisse nouvelle génération conçu pour les cafés et coffee shops. Il transforme chaque transaction en données exploitables pour piloter vos ventes, optimiser vos stocks et simplifier votre quotidien.
             </p>
           </div>
-
           <div class="card-footer">
-            <span class="app-status">
-              <span class="status-dot"></span>
-              V 1.2.1
-            </span>
-
-            <a href="https://raw.githubusercontent.com/buildorastudio2023/Store/refs/heads/main/Torreia.html" class="btn-launch">
+            <span class="app-status"><span class="status-dot"></span>V 1.2.1</span>
+            <a href="https://raw.githubusercontent.com/buildorastudio2023/Store/refs/heads/main/Torreia.html"
+               class="btn-launch"
+               data-app="torreia"
+               data-base="https://raw.githubusercontent.com/buildorastudio2023/Store/refs/heads/main/"
+               data-title="Torreia">
               Ouvrir
-              <svg viewBox="0 0 24 24">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
               </svg>
             </a>
           </div>
         </article>
 
-        <!-- Application 2 -->
+        <!-- EduLycée -->
         <article class="app-card">
           <div>
             <div class="card-top">
               <div class="app-icon">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
                 </svg>
               </div>
               <div class="card-title-group">
                 <h2>EduLycée</h2>
-                <span class="card-tag">Éducation & Apprentissage</span>
+                <span class="card-tag">Éducation & apprentissage</span>
               </div>
             </div>
-
             <p class="app-desc">
               Plateforme d'apprentissage numérique interactive conçue pour accompagner les lycéens dans leur suivi scolaire et la révision de leurs programmes.
             </p>
           </div>
-
           <div class="card-footer">
-            <span class="app-status">
-              <span class="status-dot"></span>
-              V 1.0
-            </span>
-
-            <a href="https://buildorastudio2023.github.io/Edu-Lycee/" class="btn-launch">
+            <span class="app-status"><span class="status-dot"></span>V 1.0</span>
+            <a href="https://raw.githubusercontent.com/buildorastudio2023/Edu-Lycee/refs/heads/main/index.html"
+               class="btn-launch"
+               data-app="edulycee"
+               data-base="https://buildorastudio2023.github.io/Edu-Lycee/"
+               data-title="EduLycée">
               Ouvrir
-              <svg viewBox="0 0 24 24">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
               </svg>
             </a>
           </div>
         </article>
 
-        <!-- Application 3 -->
+        <!-- PatchWork -->
         <article class="app-card">
           <div>
             <div class="card-top">
               <div class="app-icon">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/>
                 </svg>
               </div>
               <div class="card-title-group">
                 <h2>PatchWork</h2>
-                <span class="card-tag">Montage & Production Page Web</span>
+                <span class="card-tag">Montage & production de pages web</span>
               </div>
             </div>
-
             <p class="app-desc">
-              Solution fluide de gestion et d'organisation pour vos projets de site web, simplifiant les étapes de dérochage et d'assemblage.
+              Solution de gestion et d'organisation pour vos projets de site web, simplifiant les étapes de préparation et d'assemblage.
             </p>
           </div>
-
           <div class="card-footer">
-            <span class="app-status">
-              <span class="status-dot"></span>
-              V 1.1
-            </span>
-
-            <a href="https://buildorastudio2023.github.io/PatchWork/" class="btn-launch">
+            <span class="app-status"><span class="status-dot"></span>V 1.1</span>
+            <a href="https://raw.githubusercontent.com/buildorastudio2023/PatchWork/refs/heads/main/index.html"
+               class="btn-launch"
+               data-app="patchwork"
+               data-base="https://buildorastudio2023.github.io/PatchWork/"
+               data-title="PatchWork">
               Ouvrir
-              <svg viewBox="0 0 24 24">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
               </svg>
             </a>
           </div>
         </article>
-
       </div>
     </section>
 
-    <!-- SECTION 2 : À PROPOS -->
+    <!-- À PROPOS -->
     <section id="apropos" class="page-section">
       <article class="content-card">
         <h1>À propos de Buildora Studio</h1>
@@ -927,24 +936,24 @@
           Buildora Studio, anciennement Meta Service, est un projet créé en 2023 avec pour objectif d’apprendre, d’expérimenter et de développer progressivement des compétences dans le domaine du numérique.
         </p>
         <p>
-         En 2023, le projet a commencé par l’apprentissage de l’algorithmique et de la programmation à travers la conception de plusieurs projets personnels. Cette première étape nous a permis de comprendre progressivement la logique de programmation, de créer nos premiers projets et d’apprendre principalement en pratiquant et en expérimentant différentes idées.
+          En 2023, le projet a commencé par l’apprentissage de l’algorithmique et de la programmation à travers la conception de plusieurs projets personnels. Cette première étape nous a permis de comprendre progressivement la logique de programmation, de créer nos premiers projets et d’apprendre principalement en pratiquant et en expérimentant différentes idées.
         </p>
         <p>
-          En 2025, nous avons commencé à nous orienter davantage vers la conception d’applications web. Plusieurs sites et projets de test ont été réalisés afin d’apprendre à concevoir des interfaces web, à structurer des applications et à mieux comprendre le fonctionnement du développement web. Cette période nous a permis d’acquérir progressivement de nouvelles compétences et de passer de simples expérimentations à des projets web plus complets.
+          En 2025, nous avons commencé à nous orienter davantage vers la conception d’applications web. Plusieurs sites et projets de test ont été réalisés afin d’apprendre à concevoir des interfaces web, à structurer des applications et à mieux comprendre le fonctionnement du développement web.
         </p>
         <p>
           En 2026, le projet a évolué avec un changement d’identité : Meta Service devient Buildora Studio. Cette nouvelle identité accompagne une nouvelle orientation du projet, avec la volonté de concevoir des solutions numériques destinées au public.
         </p>
         <p>
           Nous avons ainsi commencé à développer des outils d’aide et de travail, ainsi que des solutions permettant de concevoir des sites web sur mesure. L’objectif est de transformer les connaissances et l’expérience acquises au cours des années précédentes en projets concrets, utiles et accessibles.
-           </p>
+        </p>
         <p>
-Aujourd’hui, Buildora Studio continue donc d’évoluer autour de trois axes : la création d’outils numériques, le développement de solutions web et la conception de sites sur mesure, tout en continuant à expérimenter de nouvelles idées et technologies.
+          Aujourd’hui, Buildora Studio continue donc d’évoluer autour de trois axes : la création d’outils numériques, le développement de solutions web et la conception de sites sur mesure, tout en continuant à expérimenter de nouvelles idées et technologies.
         </p>
       </article>
     </section>
 
-    <!-- SECTION 3 : CONTACT -->
+    <!-- CONTACT -->
     <section id="contact" class="page-section">
       <div class="content-card">
         <h1>Contactez-nous</h1>
@@ -954,12 +963,12 @@ Aujourd’hui, Buildora Studio continue donc d’évoluer autour de trois axes :
         <div class="info-list">
           <div class="info-item">
             <div class="info-icon">
-              <svg viewBox="0 0 24 24">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
               </svg>
             </div>
             <div class="info-details">
-              <label>Adresse E-mail</label>
+              <label>Adresse e-mail</label>
               <a href="mailto:metaserviceofficiel@gmail.com">metaserviceofficiel@gmail.com</a>
             </div>
           </div>
@@ -967,77 +976,251 @@ Aujourd’hui, Buildora Studio continue donc d’évoluer autour de trois axes :
       </div>
     </section>
 
-    <!-- SECTION 4 : MENTIONS LÉGALES -->
+    <!-- MENTIONS LÉGALES -->
     <section id="droits" class="page-section">
       <article class="content-card">
         <h1>Mentions légales & droits d'auteur</h1>
         <p>
-          Les contenus présents sur ce site, notamment les textes, logiciels, interfaces, éléments graphiques, logos et créations originales, sont présentés par BuildoraStudio.
+          Les contenus présents sur ce site, notamment les textes, logiciels, interfaces, éléments graphiques, logos et créations originales, sont présentés par Buildora Studio.
         </p>
         <p>
           Toute utilisation, reproduction ou redistribution non autorisée de ces éléments est refusée, sous réserve des droits et exceptions prévus par les lois applicables.
         </p>
         <p>
-          BuildoraStudio se réserve le droit de faire valoir ses droits lorsque la législation applicable le permet.
+          Buildora Studio se réserve le droit de faire valoir ses droits lorsque la législation applicable le permet.
         </p>
       </article>
     </section>
-
   </main>
 
-  <!-- PIED DE PAGE -->
-  <footer>
+  <footer id="main-footer">
     <div class="footer-container">
       <p>
-        &copy; 2026 Buildora Studio. 
-        <a href="#" class="footer-link" onclick="showPage('droits'); return false;">
-          Tous droits réservés.
-        </a>
+        &copy; 2026 Buildora Studio.
+        <a href="#droits" class="footer-link" onclick="showPage('droits'); return false;">Tous droits réservés.</a>
       </p>
     </div>
   </footer>
 
-  <!-- JAVASCRIPT -->
+  <!-- Visionneuse plein écran : aucune barre supérieure -->
+  <div id="app-viewer" aria-hidden="true">
+    <iframe
+      id="app-frame"
+      title="Application Buildora Studio"
+      allow="fullscreen; clipboard-read; clipboard-write"
+      referrerpolicy="strict-origin-when-cross-origin">
+    </iframe>
+
+    <div id="app-error">
+      <div class="error-card">
+        <h2>Impossible de charger cette application</h2>
+        <p id="app-error-message">
+          Vérifie ta connexion Internet et que le fichier HTML existe bien dans le dépôt GitHub.
+        </p>
+        <div class="error-actions">
+          <button type="button" id="retry-app">Réessayer</button>
+          <button type="button" id="close-app">Retour au catalogue</button>
+          <a id="open-source" href="#" target="_blank" rel="noopener noreferrer">Ouvrir le fichier source</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    /* Écran de chargement */
-    window.addEventListener('load', function() {
-      const loader = document.getElementById('loader');
-      loader.classList.add('fade-out');
-      document.body.classList.add('loaded');
+    (() => {
+      "use strict";
 
-      setTimeout(function() {
-        loader.style.display = 'none';
-      }, 400);
-    });
+      const loader = document.getElementById("loader");
+      const viewer = document.getElementById("app-viewer");
+      const frame = document.getElementById("app-frame");
+      const errorPanel = document.getElementById("app-error");
+      const errorMessage = document.getElementById("app-error-message");
+      const retryButton = document.getElementById("retry-app");
+      const closeButton = document.getElementById("close-app");
+      const openSourceLink = document.getElementById("open-source");
 
-    /* Navigation entre les sections */
-    function showPage(pageId) {
-      const sections = document.querySelectorAll('.page-section');
-      sections.forEach(function(section) {
-        section.classList.remove('active');
+      let currentApp = null;
+      let loadingToken = 0;
+      let previousScrollY = 0;
+
+      /* Fin du chargement initial */
+      window.addEventListener("load", () => {
+        loader.classList.add("fade-out");
+        window.setTimeout(() => {
+          loader.style.display = "none";
+        }, 350);
       });
 
-      const navLinks = document.querySelectorAll('.nav-links a');
-      navLinks.forEach(function(link) {
-        link.classList.remove('active');
-      });
+      /* Navigation entre les pages du catalogue */
+      window.showPage = function(pageId) {
+        if (viewer.classList.contains("visible")) {
+          closeApplication(false);
+        }
 
-      const targetSection = document.getElementById(pageId);
-      if (targetSection) {
-        targetSection.classList.add('active');
+        document.querySelectorAll(".page-section").forEach(section => {
+          section.classList.toggle("active", section.id === pageId);
+        });
+
+        document.querySelectorAll(".nav-links a").forEach(link => {
+          link.classList.remove("active");
+        });
+
+        const activeLink = document.getElementById("nav-" + pageId);
+        if (activeLink) activeLink.classList.add("active");
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      /*
+       * Les adresses raw fournissent le code HTML.
+       * Le HTML récupéré est injecté dans une iframe plein écran.
+       * La balise <base> permet aux fichiers CSS, images et scripts
+       * relatifs de rechercher leurs ressources à la bonne adresse.
+       */
+      async function launchApplication(link) {
+        const app = {
+          url: link.href,
+          base: link.dataset.base,
+          title: link.dataset.title || "Application",
+          token: ++loadingToken
+        };
+
+        currentApp = app;
+        previousScrollY = window.scrollY;
+
+        document.body.classList.add("app-open");
+        viewer.classList.add("visible");
+        viewer.setAttribute("aria-hidden", "false");
+        errorPanel.classList.remove("visible");
+        frame.removeAttribute("src");
+        frame.srcdoc = "";
+        openSourceLink.href = app.url;
+
+        if (!history.state || history.state.buildoraApp !== true) {
+          history.pushState({ buildoraApp: true }, "", "#application");
+        }
+
+        try {
+          const response = await fetch(app.url, {
+            method: "GET",
+            cache: "no-cache"
+          });
+
+          if (!response.ok) {
+            throw new Error("GitHub a répondu avec le code HTTP " + response.status + ".");
+          }
+
+          let html = await response.text();
+
+          if (app.token !== loadingToken) return;
+
+          /*
+           * Insère ou corrige la base URL.
+           * Cela évite de casser les chemins relatifs des ressources.
+           */
+          const baseTag = '<base href="' + app.base.replace(/"/g, "&quot;") + '">';
+
+          if (/<base\b[^>]*>/i.test(html)) {
+            html = html.replace(/<base\b[^>]*>/i, baseTag);
+          } else if (/<head\b[^>]*>/i.test(html)) {
+            html = html.replace(/<head\b[^>]*>/i, match => match + "\n" + baseTag);
+          } else {
+            html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">" +
+              baseTag + "</head><body>" + html + "</body></html>";
+          }
+
+          /*
+           * Retire les éventuelles balises base en double.
+           * Le document doit conserver une seule URL de base.
+           */
+          let baseCount = 0;
+          html = html.replace(/<base\b[^>]*>/gi, tag => {
+            baseCount++;
+            return baseCount === 1 ? tag : "";
+          });
+
+          if (app.token !== loadingToken) return;
+
+          frame.srcdoc = html;
+          document.title = app.title + " — Buildora Studio";
+        } catch (error) {
+          if (app.token !== loadingToken) return;
+
+          console.error("Erreur de chargement de l'application :", error);
+          errorMessage.textContent =
+            "Le fichier HTML n'a pas pu être récupéré. Vérifie que le dépôt est public, que l'adresse du fichier est correcte et que le fichier existe. Détail : " +
+            error.message;
+
+          errorPanel.classList.add("visible");
+        }
       }
 
-      const activeNav = document.getElementById('nav-' + pageId);
-      if (activeNav) {
-        activeNav.classList.add('active');
+      /* Ouvre les applications au clic sans quitter le catalogue */
+      document.querySelectorAll("a[data-app]").forEach(link => {
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          launchApplication(link);
+        });
+      });
+
+      /* Réessayer en conservant l'application sélectionnée */
+      retryButton.addEventListener("click", () => {
+        if (!currentApp) return;
+
+        const link = document.querySelector(
+          'a[data-app="' + CSS.escape(currentApp.title.toLowerCase()) + '"]'
+        );
+
+        if (link) {
+          launchApplication(link);
+        } else {
+          const app = currentApp;
+          const matchingLink = [...document.querySelectorAll("a[data-app]")]
+            .find(item => item.href === app.url);
+
+          if (matchingLink) launchApplication(matchingLink);
+        }
+      });
+
+      /*
+       * Fermer l'application revient au catalogue.
+       * Le bouton Retour du navigateur fonctionne également.
+       */
+      function closeApplication(goBack = true) {
+        if (!viewer.classList.contains("visible")) return;
+
+        loadingToken++;
+        currentApp = null;
+
+        viewer.classList.remove("visible");
+        viewer.setAttribute("aria-hidden", "true");
+        errorPanel.classList.remove("visible");
+        frame.removeAttribute("src");
+        frame.srcdoc = "";
+        document.body.classList.remove("app-open");
+        document.title = "Buildora Studio";
+        window.scrollTo(0, previousScrollY);
+
+        if (goBack && history.state && history.state.buildoraApp === true) {
+          history.back();
+        }
       }
 
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+      closeButton.addEventListener("click", () => closeApplication(true));
+
+      window.addEventListener("popstate", () => {
+        if (viewer.classList.contains("visible")) {
+          closeApplication(false);
+        }
       });
-    }
+
+      /* Échap ferme l'application depuis le clavier */
+      window.addEventListener("keydown", event => {
+        if (event.key === "Escape" && viewer.classList.contains("visible")) {
+          closeApplication(true);
+        }
+      });
+    })();
   </script>
-
 </body>
 </html>
