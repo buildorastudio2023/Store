@@ -3,1223 +3,411 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f8fafc">
-  <title>Buildora Studio</title>
+  <title>Télécharger Torreia</title>
+  
+  <!-- Favicon Buildora Studio -->
   <link rel="icon" type="image/png" href="https://i.postimg.cc/wvGDsjXM/Code-Generated-Image.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Statistiques -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1TYSD3XF4S"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-1TYSD3XF4S');
-  </script>
 
   <style>
-    *, *::before, *::after {
+    :root {
+      --bg-main: #ffffff;
+      --bg-card: #f8fafc;
+      --accent: #d97706;
+      --accent-hover: #b45309;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --pro-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-    }
-
-    :root {
-      color-scheme: light dark;
-      --bg: #f8fafc;
-      --surface: #fff;
-      --hover: #f1f5f9;
-      --border: #e2e8f0;
-      --border-hover: #cbd5e1;
-      --text: #0f172a;
-      --sub: #475569;
-      --muted: #64748b;
-      --brand: #2563eb;
-      --brand-hover: #1d4ed8;
-      --glow: rgba(37, 99, 235, .12);
-      --promo: linear-gradient(135deg, #1e293b, #0f172a);
-      --promo-text: #fff;
-      --promo-sub: #94a3b8;
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.05);
-      --shadow-md: 0 10px 25px -5px rgba(0,0,0,.05);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0b0f17;
-        --surface: #111827;
-        --hover: #1f293d;
-        --border: #1f2937;
-        --border-hover: #374151;
-        --text: #f9fafb;
-        --sub: #9ca3af;
-        --muted: #6b7280;
-        --brand: #3b82f6;
-        --brand-hover: #2563eb;
-        --glow: rgba(59,130,246,.15);
-        --promo: linear-gradient(135deg,#111827,#1f2937);
-        --promo-text: #f9fafb;
-        --promo-sub: #9ca3af;
-        --shadow-sm: 0 1px 3px rgba(0,0,0,.3);
-        --shadow-md: 0 12px 24px -10px rgba(0,0,0,.5);
-      }
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
-      font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      background-color: var(--bg-main);
+      color: var(--text-main);
       line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      -webkit-font-smoothing: antialiased;
     }
 
-    body.app-open {
-      overflow: hidden;
-    }
-
-    a {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    button {
-      font: inherit;
-    }
-
-    /* Chargement */
-    #loader {
+    /* ÉCRAN DE CHARGEMENT */
+    #loader-wrapper {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #ffffff;
       z-index: 9999;
-      background: var(--bg);
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      gap: 18px;
-      transition: opacity .3s, visibility .3s;
+      align-items: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
     }
 
-    #loader.fade-out {
+    #loader-wrapper.hidden {
       opacity: 0;
       visibility: hidden;
-      pointer-events: none;
+    }
+
+    .loader-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      animation: pulse 1.8s infinite ease-in-out;
     }
 
     .spinner {
       width: 40px;
       height: 40px;
       border: 3px solid var(--border);
-      border-top-color: var(--brand);
+      border-top: 3px solid var(--accent);
       border-radius: 50%;
-      animation: spin .8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 16px;
     }
 
     .loader-text {
-      color: var(--sub);
-      font-size: .875rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
     }
 
-    /* Navigation */
-    .navbar {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
-    .nav-container {
-      max-width: 1140px;
-      margin: auto;
-      padding: .875rem 1.5rem;
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.85; }
+    }
+
+    /* EN-TÊTE */
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 1rem;
+      padding: 20px 8%;
+      border-bottom: 1px solid var(--border);
     }
 
-    .brand {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -.02em;
-      white-space: nowrap;
-    }
-
-    .brand-accent {
-      color: var(--brand);
-    }
-
-    .nav-links {
+    .logo-container {
       display: flex;
-      gap: .25rem;
-      list-style: none;
-      background: var(--bg);
-      padding: .25rem;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-    }
-
-    .nav-links a {
-      display: block;
-      padding: .4rem 1rem;
-      color: var(--sub);
-      font-size: .875rem;
-      font-weight: 500;
+      align-items: center;
+      gap: 12px;
       text-decoration: none;
-      border-radius: 999px;
       cursor: pointer;
     }
 
-    .nav-links a:hover {
-      color: var(--text);
+    .studio-logo {
+      height: 36px;
+      width: 36px;
+      object-fit: contain;
+      border-radius: 6px;
     }
 
-    .nav-links a.active {
-      color: #fff;
-      background: var(--brand);
-    }
-
-    /* Pages */
-    main {
-      width: 100%;
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem 5rem;
-      flex: 1;
-    }
-
-    .page-section {
-      display: none;
-    }
-
-    .page-section.active {
-      display: block;
-      animation: page-in .2s ease;
-    }
-
-    @keyframes page-in {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Promotion */
-    .promo-banner {
-      background: var(--promo);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      margin-bottom: 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-      box-shadow: var(--shadow-md);
-    }
-
-    .promo-content {
-      max-width: 700px;
-    }
-
-    .promo-badge {
-      display: inline-block;
-      color: #fff;
-      background: #e11d48;
-      font-size: .75rem;
+    .studio-brand {
+      font-size: 0.9rem;
       font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text-main);
       text-transform: uppercase;
-      letter-spacing: .05em;
-      padding: .2rem .6rem;
-      border-radius: 4px;
-      margin-bottom: .75rem;
     }
 
-    .promo-title {
-      color: var(--promo-text);
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: .5rem;
-    }
-
-    .promo-desc {
-      color: var(--promo-sub);
-      font-size: .95rem;
-    }
-
-    .btn-promo {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: .5rem;
-      padding: .75rem 1.25rem;
-      background: #fff;
-      color: #0f172a;
-      font-size: .9rem;
-      font-weight: 700;
+    .nav-pro-link {
+      color: var(--accent);
+      font-weight: 600;
       text-decoration: none;
-      border-radius: var(--radius-md);
-      white-space: nowrap;
+      padding: 6px 12px;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
     }
 
-    .btn-promo:hover {
-      background: #f1f5f9;
+    .nav-pro-link:hover {
+      background-color: var(--accent);
+      color: #ffffff;
     }
 
-    .btn-promo svg,
-    .btn-launch svg {
-      width: 16px;
-      height: 16px;
-      fill: currentColor;
-      flex-shrink: 0;
-    }
-
-    /* Réalisations */
-    .clients-section {
-      margin-bottom: 3rem;
-      padding: 2rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--brand);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-md);
-    }
-
-    .clients-header {
-      margin-bottom: 1.5rem;
-    }
-
-    .clients-badge {
-      display: inline-block;
-      margin-bottom: .5rem;
-      padding: .25rem .75rem;
-      border-radius: 999px;
-      color: var(--brand);
-      background: var(--glow);
-      font-size: .75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .clients-title {
-      font-size: 1.35rem;
-      font-weight: 800;
-    }
-
-    .clients-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
-      gap: 1.25rem;
-    }
-
-    .client-card {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1.25rem;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-    }
-
-    .client-logo {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-sm);
-      object-fit: cover;
-      flex-shrink: 0;
-      border: 1px solid var(--border);
-      background: var(--surface);
-    }
-
-    .client-name {
-      font-size: 1rem;
-      font-weight: 700;
-    }
-
-    .client-status {
-      display: flex;
-      align-items: center;
-      gap: .4rem;
-      margin-top: .3rem;
-      color: var(--sub);
-      font-size: .8125rem;
-    }
-
-    .status-pulse,
-    .status-dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .status-pulse {
-      background: #3b82f6;
-    }
-
-    .status-dot {
-      background: #10b981;
-    }
-
-    /* Présentation */
+    /* HERO */
     .hero {
-      max-width: 700px;
-      margin-bottom: 2rem;
+      text-align: center;
+      padding: 60px 20px 40px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .app-logo {
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
 
     .hero h1 {
-      font-size: 2.25rem;
+      font-size: 3rem;
       font-weight: 800;
-      line-height: 1.2;
-      letter-spacing: -.03em;
-      margin-bottom: .75rem;
+      margin-bottom: 15px;
+      color: var(--text-main);
     }
 
     .hero p {
-      color: var(--sub);
-      font-size: 1.125rem;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      margin-bottom: 30px;
     }
 
-    /* Applications */
-    .app-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(min(100%,330px),1fr));
-      gap: 1.5rem;
-    }
-
-    .app-card {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 1.75rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-      transition: transform .2s, background .2s, border-color .2s;
-    }
-
-    .app-card:hover {
-      border-color: var(--border-hover);
-      background: var(--hover);
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .app-icon {
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-    }
-
-    .app-icon svg {
-      width: 24px;
-      height: 24px;
-      fill: var(--brand);
-    }
-
-    .card-title-group h2 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      line-height: 1.3;
-    }
-
-    .card-tag {
+    .btn-download {
       display: inline-block;
-      margin-top: .2rem;
-      color: var(--brand);
-      font-size: .75rem;
+      background-color: var(--accent);
+      color: #ffffff;
+      padding: 14px 32px;
+      border-radius: 8px;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .03em;
-    }
-
-    .app-desc {
-      margin-bottom: 1.75rem;
-      color: var(--sub);
-      font-size: .9375rem;
-      line-height: 1.6;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: .75rem;
-      border-top: 1px solid var(--border);
-      padding-top: 1.25rem;
-    }
-
-    .app-status {
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-      color: var(--muted);
-      font-size: .8125rem;
-      font-weight: 500;
-    }
-
-    .btn-launch {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: .4rem;
-      padding: .5rem 1rem;
-      background: var(--brand);
-      color: #fff;
-      border: 1px solid var(--brand);
-      border-radius: var(--radius-sm);
       text-decoration: none;
-      font-size: .875rem;
-      font-weight: 600;
-      cursor: pointer;
+      transition: background-color 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.2);
     }
 
-    .btn-launch:hover {
-      background: var(--brand-hover);
-      border-color: var(--brand-hover);
+    .btn-download:hover {
+      background-color: var(--accent-hover);
     }
 
-    /* Pages À propos, Contact et Mentions légales */
-    .content-card {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2.5rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .content-card h1 {
-      font-size: 1.875rem;
-      font-weight: 800;
-      margin-bottom: 1.5rem;
-    }
-
-    .content-card p {
-      color: var(--sub);
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-bottom: 1.25rem;
-    }
-
-    .content-card p:last-child {
-      margin-bottom: 0;
-    }
-
-    .info-list {
+    /* GALERIE APERÇUS */
+    .gallery-container {
+      max-width: 1000px;
+      margin: 0 auto 60px auto;
+      padding: 0 20px;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      margin-top: 2rem;
+      gap: 40px;
     }
 
-    .info-item {
+    .app-preview {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .window-header {
+      background-color: #f1f5f9;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
-      gap: 1.25rem;
-      padding: 1.25rem;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      overflow-wrap: anywhere;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .info-icon {
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red { background-color: #ef4444; }
+    .dot-yellow { background-color: #f59e0b; }
+    .dot-green { background-color: #10b981; }
+
+    .image-wrapper {
+      width: 100%;
+      overflow: hidden;
     }
 
-    .info-icon svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--brand);
-    }
-
-    .info-details label {
+    .mockup-image {
+      width: 100%;
+      height: auto;
       display: block;
-      color: var(--muted);
-      font-size: .75rem;
-      font-weight: 600;
-      text-transform: uppercase;
     }
 
-    .info-details a {
-      color: var(--text);
-      font-weight: 600;
-      text-decoration: none;
+    /* FONCTIONNALITÉS */
+    .features {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
     }
 
-    .info-details a:hover {
-      color: var(--brand);
+    .feature-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 25px;
     }
 
-    /* Pied de page */
-    footer {
-      margin-top: auto;
-      padding: 2rem 1.5rem;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
+    .feature-card h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
     }
 
-    .footer-container {
-      max-width: 1140px;
-      margin: auto;
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* SECTION TORREIA PRO */
+    .pro-section {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .pro-card {
+      background: var(--pro-gradient);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: var(--sub);
-      font-size: .875rem;
-    }
-
-    .footer-link {
-      color: var(--sub);
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .footer-link:hover {
-      color: var(--brand);
-      text-decoration: underline;
-    }
-
-    /* Visionneuse : l'application occupe tout l'écran, sans barre supérieure */
-    #app-viewer {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 20000;
-      width: 100%;
-      height: 100%;
-      height: 100dvh;
-      background: #fff;
-    }
-
-    #app-viewer.visible {
-      display: block;
-    }
-
-    #app-frame {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: #fff;
-    }
-
-    #app-error {
-      display: none;
-      position: absolute;
-      inset: 0;
-      padding: 2rem;
-      background: var(--bg);
-      color: var(--text);
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    #app-error.visible {
-      display: flex;
-    }
-
-    .error-card {
-      max-width: 520px;
-      padding: 2rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-    }
-
-    .error-card h2 {
-      margin-bottom: .75rem;
-    }
-
-    .error-card p {
-      color: var(--sub);
-      margin-bottom: 1.25rem;
-    }
-
-    .error-actions {
-      display: flex;
-      justify-content: center;
       flex-wrap: wrap;
-      gap: .75rem;
+      gap: 20px;
+      box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.3);
     }
 
-    .error-actions button,
-    .error-actions a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: .65rem 1rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--brand);
-      color: white;
-      font-weight: 600;
+    .pro-info h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pro-info p {
+      color: #94a3b8;
+      font-size: 1rem;
+      max-width: 600px;
+    }
+
+    .pro-btn {
+      display: inline-block;
+      background-color: var(--accent);
+      color: #ffffff;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-weight: 700;
       text-decoration: none;
-      cursor: pointer;
+      transition: background-color 0.2s ease;
+      white-space: nowrap;
     }
 
-    .error-actions a {
-      background: var(--surface);
-      color: var(--text);
+    .pro-btn:hover {
+      background-color: var(--accent-hover);
     }
 
-    @media (max-width: 640px) {
-      .nav-container {
-        flex-direction: column;
-      }
-
-      .nav-links {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .nav-links a {
-        padding: .4rem .8rem;
-      }
-
-      main {
-        padding: 1.5rem 1rem 3rem;
-      }
-
-      .hero h1 {
-        font-size: 1.875rem;
-      }
-
-      .promo-banner {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 1.5rem;
-      }
-
-      .btn-promo {
-        width: 100%;
-      }
-
-      .clients-section {
-        padding: 1.25rem;
-      }
-
-      .content-card {
-        padding: 1.5rem;
-      }
-
-      .footer-container {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 40px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      background-color: var(--bg-card);
     }
   </style>
 </head>
-
 <body>
-  <!-- Chargement du catalogue -->
-  <div id="loader">
+
+  <!-- ÉCRAN DE CHARGEMENT -->
+  <div id="loader-wrapper">
+    <img src="https://i.postimg.cc/wvGDsjXM/Code-Generated-Image.png" alt="Buildora Studio Logo" class="loader-logo">
     <div class="spinner"></div>
-    <div class="loader-text">Chargement des ressources...</div>
+    <div class="loader-text">Chargement de Torreia...</div>
   </div>
 
-  <!-- Navigation du catalogue -->
-  <nav class="navbar" id="main-navbar">
-    <div class="nav-container">
-      <a href="#" class="brand" onclick="showPage('Store'); return false;">
-        Buildora<span class="brand-accent">Studio</span>
-      </a>
+  <header>
+    <a href="https://buildorastudio2023.github.io/Store/" class="logo-container">
+      <img src="https://i.postimg.cc/wvGDsjXM/Code-Generated-Image.png" alt="Buildora Studio Logo" class="studio-logo">
+      <span class="studio-brand">Buildora Studio</span>
+    </a>
+  </header>
 
-      <ul class="nav-links">
-        <li><a id="nav-Store" class="active" href="#store" onclick="showPage('Store'); return false;">Store</a></li>
-        <li><a id="nav-apropos" href="#apropos" onclick="showPage('apropos'); return false;">À propos</a></li>
-        <li><a id="nav-contact" href="#contact" onclick="showPage('contact'); return false;">Contact</a></li>
-      </ul>
-    </div>
-  </nav>
+   <section class="hero">
+    <img src="https://i.postimg.cc/nrV8QfD1/Torreia-Logo.jpg" alt="Torreia Logo" class="app-logo">
+    <h1>Torreia</h1>
+    <p>Logiciel nécessitant Microsoft WebView2 Runtime pour fonctionner Installez le Microsoft Edge WebView2 Runtime depuis le site officiel de Microsoft.</p>
+    
+    <!-- BOUTON TÉLÉCHARGEMENT VERSION GRATUITE / STANDARD -->
+    <a href="https://github.com/user-attachments/files/31265709/Torreia.zip" class="btn-download" target="_blank" rel="noopener noreferrer">Télécharger 
+Torreia.exe (Win 10&11)</a>
+      <p>**REMARQUE** : Windows peut signaler ce logiciel comme suspect, car il n’est pas encore certifié.</p>
+  </section>
 
-  <main id="main-content">
-    <!-- STORE -->
-    <section id="Store" class="page-section active">
-      <aside class="promo-banner">
-        <div class="promo-content">
-          <span class="promo-badge">Création Buildora</span>
-          <h2 class="promo-title">Découvrez Sportmaroc</h2>
-          <p class="promo-desc">
-            Le nouveau portail conçu et développé par nos soins pour suivre toute l'actualité sportive au Maroc.
-          </p>
-        </div>
-        <!-- SportMaroc conserve son lien externe -->
-        <a href="http://sportmaroc.ma" class="btn-promo" target="_blank" rel="noopener noreferrer">
-          Visiter le site
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
-          </svg>
-        </a>
-      </aside>
-
-      <section class="clients-section">
-        <div class="clients-header">
-          <span class="clients-badge">Nos réalisations</span>
-          <h2 class="clients-title">Site conçu par Buildora Studio</h2>
-        </div>
-
-        <div class="clients-grid">
-          <div class="client-card">
-            <img
-              src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/112_logo.jpg/960px-112_logo.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail&_=20140626092429"
-              alt="Logo du 112"
-              class="client-logo"
-              loading="lazy"
-            >
-            <div>
-              <div class="client-name">112 Opérateur</div>
-              <div class="client-status">
-                <span class="status-pulse"></span>
-                En attente de déploiement
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <header class="hero">
-        <h1>Suite d'applications & outils web</h1>
-        <p>
-          Découvrez les solutions logicielles développées par Buildora Studio pour optimiser votre gestion, vos projets et vos flux de travail.
-        </p>
-      </header>
-
-      <div class="app-grid">
-        <!-- Torreia -->
-        <article class="app-card">
-          <div>
-            <div class="card-top">
-              <div class="app-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                </svg>
-              </div>
-              <div class="card-title-group">
-                <h2>Torreia</h2>
-                <span class="card-tag">Productivité</span>
-              </div>
-            </div>
-            <p class="app-desc">
-              Torreia est le logiciel de gestion de caisse nouvelle génération conçu pour les cafés et coffee shops. Il transforme chaque transaction en données exploitables pour piloter vos ventes, optimiser vos stocks et simplifier votre quotidien.
-            </p>
-          </div>
-          <div class="card-footer">
-            <span class="app-status"><span class="status-dot"></span>V 1.2.1</span>
-            <a href="https://raw.githubusercontent.com/buildorastudio2023/Store/refs/heads/main/Torreia.html"
-               class="btn-launch"
-               data-app="torreia"
-               data-base="https://raw.githubusercontent.com/buildorastudio2023/Store/refs/heads/main/"
-               data-title="Torreia">
-              Ouvrir
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
-              </svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- EduLycée -->
-        <article class="app-card">
-          <div>
-            <div class="card-top">
-              <div class="app-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
-                </svg>
-              </div>
-              <div class="card-title-group">
-                <h2>EduLycée</h2>
-                <span class="card-tag">Éducation & apprentissage</span>
-              </div>
-            </div>
-            <p class="app-desc">
-              Plateforme d'apprentissage numérique interactive conçue pour accompagner les lycéens dans leur suivi scolaire et la révision de leurs programmes.
-            </p>
-          </div>
-          <div class="card-footer">
-            <span class="app-status"><span class="status-dot"></span>V 1.0</span>
-            <a href="https://raw.githubusercontent.com/buildorastudio2023/Edu-Lycee/refs/heads/main/index.html"
-               class="btn-launch"
-               data-app="edulycee"
-               data-base="https://buildorastudio2023.github.io/Edu-Lycee/"
-               data-title="EduLycée">
-              Ouvrir
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
-              </svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- PatchWork -->
-        <article class="app-card">
-          <div>
-            <div class="card-top">
-              <div class="app-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/>
-                </svg>
-              </div>
-              <div class="card-title-group">
-                <h2>PatchWork</h2>
-                <span class="card-tag">Montage & production de pages web</span>
-              </div>
-            </div>
-            <p class="app-desc">
-              Solution de gestion et d'organisation pour vos projets de site web, simplifiant les étapes de préparation et d'assemblage.
-            </p>
-          </div>
-          <div class="card-footer">
-            <span class="app-status"><span class="status-dot"></span>V 1.1</span>
-            <a href="https://raw.githubusercontent.com/buildorastudio2023/PatchWork/refs/heads/main/index.html"
-               class="btn-launch"
-               data-app="patchwork"
-               data-base="https://buildorastudio2023.github.io/PatchWork/"
-               data-title="PatchWork">
-              Ouvrir
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3zM5 5h6v2H5v12h12v-6h2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2z"/>
-              </svg>
-            </a>
-          </div>
-        </article>
+  <div class="gallery-container">
+    <div class="app-preview">
+      <div class="window-header">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
       </div>
-    </section>
-
-    <!-- À PROPOS -->
-    <section id="apropos" class="page-section">
-      <article class="content-card">
-        <h1>À propos de Buildora Studio</h1>
-        <p>
-          Buildora Studio, anciennement Meta Service, est un projet créé en 2023 avec pour objectif d’apprendre, d’expérimenter et de développer progressivement des compétences dans le domaine du numérique.
-        </p>
-        <p>
-          En 2023, le projet a commencé par l’apprentissage de l’algorithmique et de la programmation à travers la conception de plusieurs projets personnels. Cette première étape nous a permis de comprendre progressivement la logique de programmation, de créer nos premiers projets et d’apprendre principalement en pratiquant et en expérimentant différentes idées.
-        </p>
-        <p>
-          En 2025, nous avons commencé à nous orienter davantage vers la conception d’applications web. Plusieurs sites et projets de test ont été réalisés afin d’apprendre à concevoir des interfaces web, à structurer des applications et à mieux comprendre le fonctionnement du développement web.
-        </p>
-        <p>
-          En 2026, le projet a évolué avec un changement d’identité : Meta Service devient Buildora Studio. Cette nouvelle identité accompagne une nouvelle orientation du projet, avec la volonté de concevoir des solutions numériques destinées au public.
-        </p>
-        <p>
-          Nous avons ainsi commencé à développer des outils d’aide et de travail, ainsi que des solutions permettant de concevoir des sites web sur mesure. L’objectif est de transformer les connaissances et l’expérience acquises au cours des années précédentes en projets concrets, utiles et accessibles.
-        </p>
-        <p>
-          Aujourd’hui, Buildora Studio continue donc d’évoluer autour de trois axes : la création d’outils numériques, le développement de solutions web et la conception de sites sur mesure, tout en continuant à expérimenter de nouvelles idées et technologies.
-        </p>
-      </article>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="page-section">
-      <div class="content-card">
-        <h1>Contactez-nous</h1>
-        <p>
-          Pour toute question, demande de partenariat ou information complémentaire, retrouvez nos coordonnées ci-dessous.
-        </p>
-        <div class="info-list">
-          <div class="info-item">
-            <div class="info-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-              </svg>
-            </div>
-            <div class="info-details">
-              <label>Adresse e-mail</label>
-              <a href="mailto:metaserviceofficiel@gmail.com">metaserviceofficiel@gmail.com</a>
-            </div>
-          </div>
-        </div>
+      <div class="image-wrapper">
+        <img src="https://i.pinimg.com/736x/c0/d3/34/c0d334cd9a202e7c8b414f8dbd3b95cc.jpg" alt="Aperçu Torreia 1" class="mockup-image">
       </div>
-    </section>
-
-    <!-- MENTIONS LÉGALES -->
-    <section id="droits" class="page-section">
-      <article class="content-card">
-        <h1>Mentions légales & droits d'auteur</h1>
-        <p>
-          Les contenus présents sur ce site, notamment les textes, logiciels, interfaces, éléments graphiques, logos et créations originales, sont présentés par Buildora Studio.
-        </p>
-        <p>
-          Toute utilisation, reproduction ou redistribution non autorisée de ces éléments est refusée, sous réserve des droits et exceptions prévus par les lois applicables.
-        </p>
-        <p>
-          Buildora Studio se réserve le droit de faire valoir ses droits lorsque la législation applicable le permet.
-        </p>
-      </article>
-    </section>
-  </main>
-
-  <footer id="main-footer">
-    <div class="footer-container">
-      <p>
-        &copy; 2026 Buildora Studio.
-        <a href="#droits" class="footer-link" onclick="showPage('droits'); return false;">Tous droits réservés.</a>
-      </p>
     </div>
+
+    <div class="app-preview">
+      <div class="window-header">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+      </div>
+      <div class="image-wrapper">
+        <img src="https://i.pinimg.com/736x/a8/c8/09/a8c809f96428eab76c8c73fe75682abf.jpg" alt="Aperçu Torreia 2" class="mockup-image">
+      </div>
+    </div>
+     <div class="app-preview">
+      <div class="window-header">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+      </div>
+      <div class="image-wrapper">
+        <img src="https://i.pinimg.com/736x/ef/16/77/ef1677390a28c7b3a536b5f5f61ae331.jpg" alt="Aperçu Torreia 3" class="mockup-image">
+  </div>
+  </div>
+   <div class="app-preview">
+      <div class="window-header">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+      </div>
+      <div class="image-wrapper">
+        <img src="https://i.pinimg.com/736x/41/13/6b/41136b832a2ed42d2eef7dd6ede7490a.jpg" alt="Aperçu Torreia 4" class="mockup-image">
+  </div>
+
+  <section class="features">
+    <div class="feature-card">
+      <h3>Encaissement Ultra-Rapide</h3>
+      <p>Interface optimisée pour réduire le temps de transaction au comptoir lors des heures de pointe.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Analyses Métier</h3>
+      <p>Tableaux de bord détaillés pour analyser la rentabilité par produit et les heures d'affluence.</p>
+    </div>
+  </section>
+  <footer>
+    <p>&copy; 2026 Buildora Studio. Tous droits réservés.</p>
+    <p style="margin-top: 5px;">Torreia est une marque déposée par Buildora Studio.</p>
   </footer>
 
-  <!-- Visionneuse plein écran : aucune barre supérieure -->
-  <div id="app-viewer" aria-hidden="true">
-    <iframe
-      id="app-frame"
-      title="Application Buildora Studio"
-      allow="fullscreen; clipboard-read; clipboard-write"
-      referrerpolicy="strict-origin-when-cross-origin">
-    </iframe>
-
-    <div id="app-error">
-      <div class="error-card">
-        <h2>Impossible de charger cette application</h2>
-        <p id="app-error-message">
-          Vérifie ta connexion Internet et que le fichier HTML existe bien dans le dépôt GitHub.
-        </p>
-        <div class="error-actions">
-          <button type="button" id="retry-app">Réessayer</button>
-          <button type="button" id="close-app">Retour au catalogue</button>
-          <a id="open-source" href="#" target="_blank" rel="noopener noreferrer">Ouvrir le fichier source</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <!-- SCRIPT DE MASQUAGE DU LOADER -->
   <script>
-    (() => {
-      "use strict";
-
-      const loader = document.getElementById("loader");
-      const viewer = document.getElementById("app-viewer");
-      const frame = document.getElementById("app-frame");
-      const errorPanel = document.getElementById("app-error");
-      const errorMessage = document.getElementById("app-error-message");
-      const retryButton = document.getElementById("retry-app");
-      const closeButton = document.getElementById("close-app");
-      const openSourceLink = document.getElementById("open-source");
-
-      let currentApp = null;
-      let loadingToken = 0;
-      let previousScrollY = 0;
-
-      /* Fin du chargement initial */
-      window.addEventListener("load", () => {
-        loader.classList.add("fade-out");
-        window.setTimeout(() => {
-          loader.style.display = "none";
-        }, 350);
-      });
-
-      /* Navigation entre les pages du catalogue */
-      window.showPage = function(pageId) {
-        if (viewer.classList.contains("visible")) {
-          closeApplication(false);
-        }
-
-        document.querySelectorAll(".page-section").forEach(section => {
-          section.classList.toggle("active", section.id === pageId);
-        });
-
-        document.querySelectorAll(".nav-links a").forEach(link => {
-          link.classList.remove("active");
-        });
-
-        const activeLink = document.getElementById("nav-" + pageId);
-        if (activeLink) activeLink.classList.add("active");
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      };
-
-      /*
-       * Les adresses raw fournissent le code HTML.
-       * Le HTML récupéré est injecté dans une iframe plein écran.
-       * La balise <base> permet aux fichiers CSS, images et scripts
-       * relatifs de rechercher leurs ressources à la bonne adresse.
-       */
-      async function launchApplication(link) {
-        const app = {
-          url: link.href,
-          base: link.dataset.base,
-          title: link.dataset.title || "Application",
-          token: ++loadingToken
-        };
-
-        currentApp = app;
-        previousScrollY = window.scrollY;
-
-        document.body.classList.add("app-open");
-        viewer.classList.add("visible");
-        viewer.setAttribute("aria-hidden", "false");
-        errorPanel.classList.remove("visible");
-        frame.removeAttribute("src");
-        frame.srcdoc = "";
-        openSourceLink.href = app.url;
-
-        if (!history.state || history.state.buildoraApp !== true) {
-          history.pushState({ buildoraApp: true }, "", "#application");
-        }
-
-        try {
-          const response = await fetch(app.url, {
-            method: "GET",
-            cache: "no-cache"
-          });
-
-          if (!response.ok) {
-            throw new Error("GitHub a répondu avec le code HTTP " + response.status + ".");
-          }
-
-          let html = await response.text();
-
-          if (app.token !== loadingToken) return;
-
-          /*
-           * Insère ou corrige la base URL.
-           * Cela évite de casser les chemins relatifs des ressources.
-           */
-          const baseTag = '<base href="' + app.base.replace(/"/g, "&quot;") + '">';
-
-          if (/<base\b[^>]*>/i.test(html)) {
-            html = html.replace(/<base\b[^>]*>/i, baseTag);
-          } else if (/<head\b[^>]*>/i.test(html)) {
-            html = html.replace(/<head\b[^>]*>/i, match => match + "\n" + baseTag);
-          } else {
-            html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\">" +
-              baseTag + "</head><body>" + html + "</body></html>";
-          }
-
-          /*
-           * Retire les éventuelles balises base en double.
-           * Le document doit conserver une seule URL de base.
-           */
-          let baseCount = 0;
-          html = html.replace(/<base\b[^>]*>/gi, tag => {
-            baseCount++;
-            return baseCount === 1 ? tag : "";
-          });
-
-          if (app.token !== loadingToken) return;
-
-          frame.srcdoc = html;
-          document.title = app.title + " — Buildora Studio";
-        } catch (error) {
-          if (app.token !== loadingToken) return;
-
-          console.error("Erreur de chargement de l'application :", error);
-          errorMessage.textContent =
-            "Le fichier HTML n'a pas pu être récupéré. Vérifie que le dépôt est public, que l'adresse du fichier est correcte et que le fichier existe. Détail : " +
-            error.message;
-
-          errorPanel.classList.add("visible");
-        }
-      }
-
-      /* Ouvre les applications au clic sans quitter le catalogue */
-      document.querySelectorAll("a[data-app]").forEach(link => {
-        link.addEventListener("click", event => {
-          event.preventDefault();
-          launchApplication(link);
-        });
-      });
-
-      /* Réessayer en conservant l'application sélectionnée */
-      retryButton.addEventListener("click", () => {
-        if (!currentApp) return;
-
-        const link = document.querySelector(
-          'a[data-app="' + CSS.escape(currentApp.title.toLowerCase()) + '"]'
-        );
-
-        if (link) {
-          launchApplication(link);
-        } else {
-          const app = currentApp;
-          const matchingLink = [...document.querySelectorAll("a[data-app]")]
-            .find(item => item.href === app.url);
-
-          if (matchingLink) launchApplication(matchingLink);
-        }
-      });
-
-      /*
-       * Fermer l'application revient au catalogue.
-       * Le bouton Retour du navigateur fonctionne également.
-       */
-      function closeApplication(goBack = true) {
-        if (!viewer.classList.contains("visible")) return;
-
-        loadingToken++;
-        currentApp = null;
-
-        viewer.classList.remove("visible");
-        viewer.setAttribute("aria-hidden", "true");
-        errorPanel.classList.remove("visible");
-        frame.removeAttribute("src");
-        frame.srcdoc = "";
-        document.body.classList.remove("app-open");
-        document.title = "Buildora Studio";
-        window.scrollTo(0, previousScrollY);
-
-        if (goBack && history.state && history.state.buildoraApp === true) {
-          history.back();
-        }
-      }
-
-      closeButton.addEventListener("click", () => closeApplication(true));
-
-      window.addEventListener("popstate", () => {
-        if (viewer.classList.contains("visible")) {
-          closeApplication(false);
-        }
-      });
-
-      /* Échap ferme l'application depuis le clavier */
-      window.addEventListener("keydown", event => {
-        if (event.key === "Escape" && viewer.classList.contains("visible")) {
-          closeApplication(true);
-        }
-      });
-    })();
+    window.addEventListener('load', function() {
+      const loader = document.getElementById('loader-wrapper');
+      loader.classList.add('hidden');
+    });
   </script>
+
 </body>
 </html>
